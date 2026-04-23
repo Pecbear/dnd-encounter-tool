@@ -1,0 +1,305 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #121212;
+  color: #f5f5f5;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+main {
+  min-height: 100vh;
+  padding: 24px;
+}
+
+h1 {
+  margin-top: 0;
+}
+
+/* === ROOT THEME === */
+.encounter-root {
+  background: radial-gradient(circle at top, #1a0000, #050505);
+  min-height: 100vh;
+  color: #eee;
+}
+
+/* === TITLE === */
+.title {
+  text-align: center;
+  color: #ff4d4d;
+  letter-spacing: 2px;
+}
+
+/* === GRID LAYOUT === */
+.encounter-grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  gap: 16px;
+}
+
+/* === PANELS === */
+.panel {
+  background: #0d0d0d;
+  border: 1px solid #330000;
+  padding: 16px;
+  border-radius: 6px;
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.15);
+}
+
+.panel h2 {
+  margin-top: 0;
+  color: #ff4d4d;
+  font-size: 1rem;
+  letter-spacing: 0.05em;
+}
+
+/* === ORDER LIST === */
+.order-list {
+  list-style: none;
+  padding: 0;
+}
+
+.order-item {
+  padding: 6px;
+  border-bottom: 1px solid #222;
+}
+
+.order-item.active {
+  color: #ff4d4d;
+  font-weight: bold;
+}
+
+.order-item.dead {
+  opacity: 0.4;
+  text-decoration: line-through;
+}
+
+/* === UNIT CARD === */
+.unit-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: #111;
+  padding: 10px;
+  border: 1px solid #440000;
+  margin-bottom: 12px;
+}
+
+.override-panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.override-box {
+  background: #1a1a1f;
+  padding: 12px;
+  border-radius: 10px;
+  min-width: 200px;
+}
+
+.override-option {
+  display: block;
+  width: 100%;
+  margin: 4px 0;
+  padding: 6px;
+  background: #2a2a30;
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+}
+
+/* === LOG === */
+.log {
+  margin: 10px 0;
+  font-size: 0.9rem;
+  color: #ccc;
+}
+
+/* === ACTION GRID === */
+.actions-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 12px;
+}
+
+.action-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 8px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* this is what gives structure on phone screens */
+.group-label {
+  width: 100%;
+  font-size: 10px;
+  opacity: 0.6;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.action-group button {
+  flex: 1;
+  min-width: 70px;
+}
+
+/* === BUTTONS === */
+.btn {
+  padding: 8px;
+  border: none;
+  cursor: pointer;
+  background: #222;
+  color: #eee;
+  transition: 0.2s;
+}
+
+.btn:hover {
+  filter: brightness(1.2);
+}
+
+/* === TYPES === */
+.btn.attack {
+  background: #5a0000;
+}
+
+.btn.heal {
+  background: #004d26;
+}
+
+.btn.util {
+  background: #333;
+}
+
+.btn.primary {
+  background: #990000;
+}
+
+.btn.danger {
+  background: #550000;
+}
+
+/* === ORDER DETAILS === */
+
+.order-name {
+  font-weight: bold;
+}
+
+.order-hp {
+  font-size: 0.8rem;
+  color: #aaa;
+}
+
+.order-state {
+  font-size: 0.75rem;
+  color: #ff4d4d;
+  font-weight: bold;
+}
+
+.order-statuses {
+  font-size: 0.75rem;
+  color: #cc6666;
+}
+
+/* === UNIT STATUS DISPLAY === */
+
+.unit-state {
+  color: #ff4d4d;
+  font-weight: bold;
+  font-size: 0.85rem;
+}
+
+.unit-statuses {
+  font-size: 0.8rem;
+  color: #cc6666;
+}
+
+.status-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.status-pill {
+  background: #1a1a1f;
+  border: 1px solid rgba(255, 60, 60, 0.35);
+  color: #e6e6e6;
+
+  padding: 2px 8px;
+  border-radius: 999px;
+
+  font-size: 11px;
+  line-height: 1.4;
+
+  white-space: nowrap;
+
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+  transition: all 0.15s ease;
+}
+
+.status-pill:hover {
+  border-color: rgba(255, 80, 80, 0.7);
+  transform: translateY(-1px);
+}
+
+/* Modal CSS */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal {
+  background: #1c1c1c;
+  border: 1px solid #333;
+  border-radius: 12px;
+  padding: 16px;
+  width: 90%;
+  max-width: 320px;
+}
+
+.modal-title {
+  font-size: 16px;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.modal-input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  border: 1px solid #444;
+  background: #111;
+  color: white;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.btn.danger {
+  border: 1px solid #ff4d4d;
+  background: rgba(255, 0, 0, 0.1);
+}

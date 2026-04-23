@@ -1,0 +1,24 @@
+Click the address bar in this folder
+type in : Powershell
+type in command: npm.cmd run dev       [for access on a mobile device on same network try: npm.cmd run dev -- --host]
+
+should see
+
+ VITE v8.0.9  ready in 170 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: use --host to expose
+  ➜  press h + enter to show help
+
+then good to go.
+
+
+
+
+to open the project folder in VS code, open powershell again by:
+
+Click the address bar in this folder
+type in : Powershell
+type in: Code .
+
+this opens the project in vscode to work with
