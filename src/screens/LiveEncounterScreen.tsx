@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import type { EncounterPreviewUnit } from "../types/encounter";
 import "../App.css";
-import { InputModal } from "../components/InputModal";
-import { saveEncounter } from '../utils/encounterStorage'
-
+import {DamageHealRibbonPicker} from "../components/DamageHealRibbonPicker";
+import { saveEncounter } from "../utils/encounterStorage";
+import { StatusRadial } from "../components/StatusRadial";
+import { UnitStatBlock } from "../components/UnitStatBlock";
 
 type LiveEncounterScreenProps = {
   units: EncounterPreviewUnit[];
@@ -45,14 +46,15 @@ function LiveEncounterScreen({
   const [currentTurnIndex, setCurrentTurnIndex] = useState(0);
   const [round, setRound] = useState(1);
   const [selectedTargetId, setSelectedTargetId] = useState("");
-  const [selectedStatus, setSelectedStatus] = useState("");
+  const [statusWheelOpen, setStatusWheelOpen] = useState(false);
   const [lastAction, setLastAction] = useState("No actions yet.");
+  const [expandedUnitId, setExpandedUnitId] = useState<string | null>(null);
   const [showOverrideSelect, setShowOverrideSelect] = useState(false);
-  const [exitConfirmOpen, setExitConfirmOpen] = useState(false)
-  const [modalOpen, setModalOpen] = useState(false);
-  const [modalAction, setModalAction] = useState<
-    "hit" | "heal" | "sethp" | null
-  >(null);
+  const [exitConfirmOpen, setExitConfirmOpen] = useState(false);
+  const [ribbonOpen, setRibbonOpen] = useState(false);
+  const [ribbonMode, setRibbonMode] = useState<"hit" | "heal" | "setHP" | null>(
+    null
+  );
 
   useEffect(() => {
     saveEncounter({
@@ -60,17 +62,9 @@ function LiveEncounterScreen({
       currentTurnIndex,
       round,
       selectedTargetId,
-      selectedStatus,
       lastAction,
-    })
-}, [
-  encounterUnits,
-  currentTurnIndex,
-  round,
-  selectedTargetId,
-  selectedStatus,
-  lastAction,
-])
+    });
+  }, [encounterUnits, currentTurnIndex, round, selectedTargetId, lastAction]);
 
   const currentUnit = encounterUnits[currentTurnIndex];
 
@@ -109,77 +103,61 @@ function LiveEncounterScreen({
     return selectedTargetId || currentUnit?.id;
   }
 
-  function applyHpChange(amount: number, mode: "damage" | "heal") {
-    const targetId = selectedTargetId;
-
-    setEncounterUnits((prev) =>
-      prev.map((unit) => {
-        if (unit.id !== targetId) return unit;
-
-        const newHp =
-          mode === "damage"
-            ? Math.max(0, unit.currentHp - amount)
-            : Math.min(unit.maxHp, unit.currentHp + amount);
-
-        return { ...unit, currentHp: newHp };
-      })
-    );
-  }
-
-  function handleModalConfirm(value: string) {
-    const num = Number(value);
-
-    if (Number.isNaN(num) || num < 0) {
-      alert("Must be a non-negative number.");
-      return;
-    }
-
-    const target = encounterUnits.find((u) => u.id === selectedTargetId);
+  function handleRibbonConfirm(value: number) {
     const actor = currentUnit;
+    if (!actor || !ribbonMode) return;
 
-    if (!target && modalAction !== "sethp") return;
+    // SET HP (no target, affects current unit)
+    if (ribbonMode === "setHP") {
+      setEncounterUnits((prev) =>
+        prev.map((u) => {
+          if (u.id !== actor.id) return u;
 
-    switch (modalAction) {
-      case "hit":
-        applyHpChange(num, "damage");
-        if (actor && target) {
-          setLastAction(`${actor.name} hit ${target.name} for ${num}.`);
-        }
-        break;
+          return {
+            ...u,
+            currentHp: Math.min(u.maxHp, Math.max(0, value)),
+          };
+        })
+      );
 
-      case "heal":
-        applyHpChange(num, "heal");
-        if (actor && target) {
-          setLastAction(`${actor.name} healed ${target.name} for ${num}.`);
-        }
-        break;
-
-      case "sethp":
-        if (!currentUnit) return;
-
-        setEncounterUnits((prev) =>
-          prev.map((u) => {
-            if (u.id !== currentUnit.id) return u;
-            return { ...u, currentHp: Math.min(u.maxHp, Math.max(0, num)) };
-          })
-        );
-
-        setLastAction(`${currentUnit.name} HP set to ${num}.`);
-        break;
+      setLastAction(`${actor.name} HP set to ${value}.`);
     }
 
-    setModalOpen(false);
-    setModalAction(null);
-  }
+    // HIT / HEAL (require target)
+    else {
+      const targetId = selectedTargetId;
+      const target = encounterUnits.find((u) => u.id === targetId);
 
-  function openNumberModal(action: typeof modalAction) {
-    setModalAction(action);
-    setModalOpen(true);
+      if (!target) return;
+
+      setEncounterUnits((prev) =>
+        prev.map((u) => {
+          if (u.id !== targetId) return u;
+
+          const newHp =
+            ribbonMode === "hit"
+              ? Math.max(0, u.currentHp - value)
+              : Math.min(u.maxHp, u.currentHp + value);
+
+          return { ...u, currentHp: newHp };
+        })
+      );
+
+      setLastAction(
+        ribbonMode === "hit"
+          ? `${actor.name} hit ${target.name} for ${value}.`
+          : `${actor.name} healed ${target.name} for ${value}.`
+      );
+    }
+
+    setRibbonOpen(false);
+    setRibbonMode(null);
   }
 
   function handleHit() {
     if (!requireTarget()) return;
-    openNumberModal("hit");
+    setRibbonMode("hit");
+    setRibbonOpen(true);
   }
 
   function handleMiss() {
@@ -193,44 +171,44 @@ function LiveEncounterScreen({
 
   function handleHeal() {
     if (!requireTarget()) return;
-    openNumberModal("heal");
+    setRibbonMode("heal");
+    setRibbonOpen(true);
   }
 
   function handleSetHp() {
-    setModalAction("sethp");
-    setModalOpen(true);
+    setRibbonMode("setHP");
+    setRibbonOpen(true);
   }
 
-  function handleAddStatus() {
+  function handleToggleStatus(status: string) {
     const id = getTargetOrSelfId();
-    if (!id || !selectedStatus) return;
+    if (!id) return;
 
-    setEncounterUnits((prev) =>
-      prev.map((u) => {
+    setEncounterUnits((prev) => {
+      const target = prev.find((u) => u.id === id);
+      const exists = target?.statuses.includes(status);
+
+      const updated = prev.map((u) => {
         if (u.id !== id) return u;
-        if (u.statuses.includes(selectedStatus)) return u;
-        return { ...u, statuses: [...u.statuses, selectedStatus] };
-      })
-    );
 
-    setLastAction(`${currentUnit.name} applied ${selectedStatus}.`);
-  }
-
-  function handleRemoveStatus() {
-    const id = getTargetOrSelfId();
-    if (!id || !selectedStatus) return;
-
-    setEncounterUnits((prev) =>
-      prev.map((u) => {
-        if (u.id !== id) return u;
         return {
           ...u,
-          statuses: u.statuses.filter((s) => s !== selectedStatus),
+          statuses: exists
+            ? u.statuses.filter((s) => s !== status)
+            : [...u.statuses, status],
         };
-      })
-    );
+      });
 
-    setLastAction(`${currentUnit.name} removed ${selectedStatus}.`);
+      setLastAction(
+        `${currentUnit.name} ${exists ? "removed" : "applied"} ${status}.`
+      );
+
+      return updated;
+    });
+  }
+
+  function toggleExpandedUnit(unitId: string) {
+    setExpandedUnitId((prev) => (prev === unitId ? null : unitId));
   }
 
   function handleSkipTurn() {
@@ -306,11 +284,15 @@ function LiveEncounterScreen({
 
           {currentUnit && (
             <>
-              <div className="unit-card">
+              <div
+                className="unit-card"
+                onClick={() => toggleExpandedUnit(currentUnit.id)}
+                style={{ cursor: "pointer" }}
+              >
                 <strong>{currentUnit.name}</strong>
 
                 <span>
-                  HP {currentUnit.currentHp}/{currentUnit.maxHp}
+                  HP {currentUnit.currentHp}/{currentUnit.maxHp} | AC {currentUnit.ac}
                 </span>
 
                 {getUnitStateLabel(currentUnit) && (
@@ -326,6 +308,18 @@ function LiveEncounterScreen({
                     ))}
                   </div>
                 )}
+
+                {expandedUnitId === currentUnit.id && (
+                  <UnitStatBlock
+                    str={currentUnit.str}
+                    dex={currentUnit.dex}
+                    con={currentUnit.con}
+                    int={currentUnit.int}
+                    wis={currentUnit.wis}
+                    cha={currentUnit.cha}
+                  />
+                )}
+
               </div>
 
               <div className="meta">Round {round}</div>
@@ -351,24 +345,11 @@ function LiveEncounterScreen({
                 <div className="action-group state">
                   <div className="group-label">State</div>
 
-                  <select
-                    value={selectedStatus}
-                    onChange={(e) => setSelectedStatus(e.target.value)}
+                  <button
+                    className="btn util"
+                    onClick={() => setStatusWheelOpen(true)}
                   >
-                    <option value="">Status</option>
-                    {AVAILABLE_STATUSES.map((s) => (
-                      <option key={s} value={s}>
-                        {s}
-                      </option>
-                    ))}
-                  </select>
-
-                  <button className="btn util" onClick={handleAddStatus}>
-                    Add Status
-                  </button>
-
-                  <button className="btn util" onClick={handleRemoveStatus}>
-                    Remove Status
+                    Open Status Wheel
                   </button>
                 </div>
 
@@ -459,13 +440,17 @@ function LiveEncounterScreen({
           </select>
 
           {selectedTarget && (
-            <div className="unit-card">
+            <div
+              className="unit-card"
+              onClick={() => toggleExpandedUnit(selectedTarget.id)}
+              style={{ cursor: "pointer" }}
+            >
               <strong>{selectedTarget.name}</strong>
 
               <span>
-                HP {selectedTarget.currentHp}/{selectedTarget.maxHp}
+                HP {selectedTarget.currentHp}/{selectedTarget.maxHp} | AC {selectedTarget.ac}
               </span>
-
+            
               {getUnitStateLabel(selectedTarget) && (
                 <span className="unit-state">
                   {getUnitStateLabel(selectedTarget)}
@@ -479,30 +464,38 @@ function LiveEncounterScreen({
                   ))}
                 </div>
               )}
+
+              {expandedUnitId === selectedTarget.id && (
+                <UnitStatBlock
+                  str={selectedTarget.str}
+                  dex={selectedTarget.dex}
+                  con={selectedTarget.con}
+                  int={selectedTarget.int}
+                  wis={selectedTarget.wis}
+                  cha={selectedTarget.cha}
+                />
+              )}
+
             </div>
           )}
         </div>
       </div>
 
-      <InputModal
-        isOpen={modalOpen}
-        title={
-          modalAction === "sethp"
-            ? "Set HP"
-            : modalAction === "heal"
-            ? "Enter Healing"
-            : modalAction === "hit"
-            ? "Enter Hit Damage"
-            : "Enter Damage"
-        }
-        placeholder="e.g. 10"
-        confirmLabel="Apply"
-        onConfirm={handleModalConfirm}
-        onCancel={() => {
-          setModalOpen(false);
-          setModalAction(null);
-        }}
-      />
+      {ribbonOpen && ribbonMode && (
+        <DamageHealRibbonPicker
+          mode={ribbonMode}
+          targetName={
+            ribbonMode === "setHP"
+              ? currentUnit?.name
+              : encounterUnits.find((u) => u.id === selectedTargetId)?.name
+          }
+          onConfirm={handleRibbonConfirm}
+          onCancel={() => {
+            setRibbonOpen(false);
+            setRibbonMode(null);
+          }}
+        />
+      )}
 
       {exitConfirmOpen && (
         <div className="override-panel">
@@ -513,10 +506,7 @@ function LiveEncounterScreen({
               This will return you to setup and discard live flow state.
             </p>
 
-            <button
-              className="btn danger"
-              onClick={() => onBackToSetup()}
-            >
+            <button className="btn danger" onClick={() => onBackToSetup()}>
               Yes, Exit
             </button>
 
@@ -528,6 +518,18 @@ function LiveEncounterScreen({
             </button>
           </div>
         </div>
+      )}
+
+      {statusWheelOpen && (
+        <StatusRadial
+          applied={
+            encounterUnits.find((u) => u.id === getTargetOrSelfId())
+              ?.statuses ?? []
+          }
+          statuses={AVAILABLE_STATUSES}
+          onToggle={handleToggleStatus}
+          onClose={() => setStatusWheelOpen(false)}
+        />
       )}
     </main>
   );

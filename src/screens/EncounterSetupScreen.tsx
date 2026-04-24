@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { mockPlayers } from "../data/mockPlayers";
-import { mockEnemies } from "../data/mockEnemies";
+import { enemyBlocks, type EnemyBlockKey } from "../data/mockEnemies";
 import type { EncounterPreviewUnit } from "../types/encounter";
-import { InputModal } from "../components/InputModal";
+import { NumberRadial } from "../components/NumberRadial";
+import { InitiativePicker } from "../components/InitiativePicker";
 
 type EncounterSetupScreenProps = {
   onBack: () => void;
@@ -16,7 +17,8 @@ type SelectedHero = {
 
 type SelectedEnemy = {
   id: string;
-  number: number;
+  block: EnemyBlockKey;
+  slot: number;
   initiative: number;
 };
 
@@ -29,9 +31,10 @@ function EncounterSetupScreen({
   const [modalOpen, setModalOpen] = useState(false);
   const [modalType, setModalType] = useState<"hero" | "enemy" | null>(null);
   const [pendingHeroId, setPendingHeroId] = useState<string | null>(null);
-  const [pendingEnemyNumber, setPendingEnemyNumber] = useState<number | null>(
-    null
-  );
+
+  const [selectedBlock, setSelectedBlock] = useState<EnemyBlockKey | null>(null);
+  const [pendingEnemySlot, setPendingEnemySlot] = useState<number | null>(null);
+  const [showSlotPicker, setShowSlotPicker] = useState(false);
 
   function handleAddHero(heroId: string) {
     if (selectedHeroes.some((h) => h.id === heroId)) return;
@@ -45,10 +48,17 @@ function EncounterSetupScreen({
     setSelectedHeroes(selectedHeroes.filter((h) => h.id !== heroId));
   }
 
-  function handleAddEnemy(enemyNumber: number) {
+  function handleSelectBlock(block: EnemyBlockKey) {
+    setSelectedBlock(block);
+    setShowSlotPicker(true);
+  }
+
+  function handleSelectSlot(slot: number) {
+    setPendingEnemySlot(slot);
+    setShowSlotPicker(false);
+
     setModalType("enemy");
     setModalOpen(true);
-    setPendingEnemyNumber(enemyNumber);
   }
 
   function handleRemoveEnemy(enemyId: string) {
@@ -69,21 +79,23 @@ function EncounterSetupScreen({
     }
 
     if (modalType === "hero" && pendingHeroId) {
-      setSelectedHeroes(prev => [
+      setSelectedHeroes((prev) => [
         ...prev,
-        { id: pendingHeroId, initiative }
+        { id: pendingHeroId, initiative },
       ]);
     }
 
     if (
-      modalType === "enemy" && 
-      typeof pendingEnemyNumber === "number"
+      modalType === "enemy" &&
+      selectedBlock &&
+      typeof pendingEnemySlot === "number"
     ) {
-      setSelectedEnemies(prev => [
+      setSelectedEnemies((prev) => [
         ...prev,
         {
           id: `enemy-${Date.now()}-${Math.floor(Math.random() * 100000)}`,
-          number: pendingEnemyNumber,
+          block: selectedBlock,
+          slot: pendingEnemySlot,
           initiative,
         },
       ]);
@@ -93,16 +105,19 @@ function EncounterSetupScreen({
     setModalOpen(false);
     setModalType(null);
     setPendingHeroId(null);
-    setPendingEnemyNumber(null);
+    setPendingEnemySlot(null);
   }
 
   function getEnemyDisplayName(selectedEnemy: SelectedEnemy) {
-    const template = mockEnemies.find((e) => e.number === selectedEnemy.number);
-    if (!template) return `#${selectedEnemy.number}`;
+    const template = enemyBlocks[selectedEnemy.block]?.[selectedEnemy.slot];
+    if (!template) return `#${selectedEnemy.slot}`;
 
     const matches = selectedEnemies.filter(
-      (e) => e.number === selectedEnemy.number
+      (e) =>
+        e.block === selectedEnemy.block &&
+        e.slot === selectedEnemy.slot
     );
+
     if (matches.length === 1) return template.name;
 
     const index = matches.findIndex((e) => e.id === selectedEnemy.id);
@@ -120,8 +135,8 @@ function EncounterSetupScreen({
 
   const sortedSelectedEnemies = [...selectedEnemies].sort((a, b) => {
     if (b.initiative !== a.initiative) return b.initiative - a.initiative;
-    const aDex = mockEnemies.find((e) => e.number === a.number)?.dex ?? 0;
-    const bDex = mockEnemies.find((e) => e.number === b.number)?.dex ?? 0;
+    const aDex = enemyBlocks[a.block]?.[a.slot]?.dex ?? 0;
+    const bDex = enemyBlocks[b.block]?.[b.slot]?.dex ?? 0;
     return bDex - aDex;
   });
 
@@ -133,7 +148,12 @@ function EncounterSetupScreen({
         id: h.id,
         name: p.name,
         initiative: h.initiative,
+        str: p.str,
         dex: p.dex,
+        con: p.con,
+        int: p.int,
+        wis: p.wis,
+        cha: p.cha,
         side: "hero",
         maxHp: p.maxHp,
         currentHp: p.maxHp,
@@ -144,15 +164,20 @@ function EncounterSetupScreen({
   });
 
   const enemyPreview: EncounterPreviewUnit[] = selectedEnemies.flatMap((e) => {
-    if (typeof e.number !== "number") return [];
-    const enemy = mockEnemies.find((x) => x.number === e.number);
+    const enemy = enemyBlocks[e.block]?.[e.slot];
     if (!enemy) return [];
+
     return [
       {
         id: e.id,
         name: getEnemyDisplayName(e),
         initiative: e.initiative,
+        str: enemy.str,
         dex: enemy.dex,
+        con: enemy.con,
+        int: enemy.int,
+        wis: enemy.wis,
+        cha: enemy.cha,
         side: "enemy",
         maxHp: enemy.maxHp,
         currentHp: enemy.maxHp,
@@ -193,14 +218,15 @@ function EncounterSetupScreen({
           </div>
 
           <div className="action-group">
-            <div className="group-label">Enemies</div>
-            {mockEnemies.map((e) => (
+            <div className="group-label">Enemy Blocks</div>
+
+            {(Object.keys(enemyBlocks) as EnemyBlockKey[]).map((block) => (
               <button
-                key={e.number}
+                key={block}
                 className="btn util"
-                onClick={() => handleAddEnemy(e.number)}
+                onClick={() => handleSelectBlock(block)}
               >
-                #{e.number} {e.name}
+                {block}
               </button>
             ))}
           </div>
@@ -245,7 +271,7 @@ function EncounterSetupScreen({
               <p className="log">No enemies selected.</p>
             ) : (
               sortedSelectedEnemies.map((e) => {
-                const enemy = mockEnemies.find((x) => x.number === e.number);
+                const enemy = enemyBlocks[e.block]?.[e.slot];
                 if (!enemy) return null;
 
                 return (
@@ -303,19 +329,26 @@ function EncounterSetupScreen({
         </div>
       </div>
 
-      <InputModal
-        isOpen={modalOpen}
-        title="Set Initiative"
-        placeholder="e.g. 14"
-        confirmLabel="Add"
-        onConfirm={handleInitiativeConfirm}
-        onCancel={() => {
-          setModalOpen(false);
-          setModalType(null);
-          setPendingHeroId(null);
-          setPendingEnemyNumber(null);
-        }}
-      />
+      {showSlotPicker && (
+        <NumberRadial
+          onSelect={(n) => handleSelectSlot(n)}
+          onClose={() => setShowSlotPicker(false)}
+        />
+      )}
+
+      {modalOpen && (
+        <InitiativePicker
+          onSelect={(value) => {
+            handleInitiativeConfirm(String(value));
+          }}
+          onCancel={() => {
+            setModalOpen(false);
+            setModalType(null);
+            setPendingHeroId(null);
+            setPendingEnemySlot(null);
+          }}
+        />
+      )}
     </main>
   );
 }

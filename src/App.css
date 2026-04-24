@@ -303,3 +303,306 @@ h1 {
   border: 1px solid #ff4d4d;
   background: rgba(255, 0, 0, 0.1);
 }
+
+/* Initiative picker css*/
+
+.picker-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: flex-end;
+  z-index: 9999;
+}
+
+.picker-sheet {
+  width: 100%;
+  max-height: 60vh;
+  background: #111;
+  border-radius: 16px 16px 0 0;
+  padding: 12px;
+  overflow: hidden;
+}
+
+.picker-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.picker-list {
+  overflow-y: auto;
+  max-height: 50vh;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+}
+
+.picker-item {
+  padding: 12px;
+  border-radius: 8px;
+  background: #222;
+  color: white;
+  border: none;
+}
+
+/*Radial Picker*/
+
+.radial-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.15);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.radial-wrap {
+  position: relative;
+  width: 98vw;
+  height: 98vw;
+  max-width: 680px;
+  max-height: 680px;
+}
+
+.radial-svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.15));
+}
+
+.radial-slice {
+  cursor: pointer;
+  transition: transform 0.08s ease;
+}
+
+.radial-slice:active {
+  transform: scale(0.98);
+}
+
+.radial-close {
+  position: absolute;
+  bottom: -48px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: #1a1a1a;
+  color: #ff4d4d;
+  border: 1px solid #330000;
+}
+
+/*Radial Picker Animations*/
+
+@keyframes radialPopIn {
+  0% {
+    transform: scale(0.75);
+    opacity: 0;
+    filter: blur(6px);
+  }
+  60% {
+    transform: scale(1.05);
+    opacity: 1;
+    filter: blur(0px);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes radialPopOut {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.85);
+    opacity: 0;
+    filter: blur(4px);
+  }
+}
+
+.radial-in {
+  animation: radialPopIn 180ms ease-out;
+}
+
+.radial-out {
+  animation: radialPopOut 180ms ease-in;
+}
+
+.radial-svg {
+  width: 100%;
+  height: 100%;
+  filter:
+    drop-shadow(0 0 12px rgba(255, 0, 0, 0.25))
+    drop-shadow(0 0 30px rgba(120, 0, 0, 0.15));
+}
+
+.radial-wrap::before {
+  content: "";
+  position: absolute;
+  inset: -20px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,0,0,0.08), transparent 60%);
+  animation: pulseGlow 2.5s infinite ease-in-out;
+  z-index: -1;
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.03); }
+}
+
+/*Combat Flash*/
+.slice-active path {
+  fill: #ff1a1a !important;
+  stroke: #ff4d4d !important;
+  filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.6));
+  transform: scale(1.02);
+  transition: all 80ms ease;
+}
+
+.slice-active text {
+  fill: white !important;
+  font-weight: bold;
+}
+
+/* kill mobile tap highlight */
+.radial-slice {
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+}
+
+/* kill focus ring on SVG interactions */
+.radial-slice:focus,
+.radial-slice:active {
+  outline: none;
+}
+
+/* extra safety for SVG children */
+.radial-slice * {
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+}
+
+/* =========================
+   DAMAGE / HEAL RIBBON PICKER
+   ========================= */
+
+.ribbon-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.ribbon-modal {
+  width: 92%;
+  max-width: 420px;
+  background: #0f0f0f;
+  border: 1px solid #330000;
+  border-radius: 14px;
+  padding: 14px;
+
+  box-shadow:
+    0 0 20px rgba(255,0,0,0.15),
+    0 0 60px rgba(0,0,0,0.6);
+}
+
+/* MODE COLORS */
+.ribbon-hit {
+  border-color: rgba(255, 0, 0, 0.4);
+  box-shadow: 0 0 25px rgba(255,0,0,0.25);
+}
+
+.ribbon-heal {
+  border-color: rgba(0, 255, 120, 0.25);
+  box-shadow: 0 0 25px rgba(0,255,120,0.15);
+}
+
+/* HEADER */
+.ribbon-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 10px;
+}
+
+.ribbon-title {
+  font-size: 14px;
+  letter-spacing: 2px;
+  font-weight: bold;
+  color: #ff4d4d;
+}
+
+.ribbon-sub {
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+/* DISPLAY */
+.ribbon-display {
+  text-align: center;
+  font-size: 42px;
+  font-weight: bold;
+  margin: 10px 0 14px 0;
+  color: #fff;
+  text-shadow: 0 0 12px rgba(255,0,0,0.25);
+}
+
+/* GRID */
+.ribbon-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+/* COLUMN */
+.ribbon-column {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* CELL */
+.ribbon-cell {
+  height: 44px;
+  border-radius: 10px;
+  background: #1a1a1a;
+  border: 1px solid #2a0000;
+  color: #eee;
+
+  font-size: 16px;
+  cursor: pointer;
+
+  transition: all 0.08s ease;
+}
+
+.ribbon-cell:active {
+  transform: scale(0.96);
+  background: #2a1a1a;
+}
+
+.ribbon-cell:hover {
+  border-color: rgba(255,0,0,0.4);
+}
+
+/* ACTIVE LEFT DIGIT */
+.ribbon-cell.active {
+  background: #2a0000;
+  border-color: #ff4d4d;
+  box-shadow: 0 0 10px rgba(255,0,0,0.3);
+}
+
+/* FOOTER */
+.ribbon-footer {
+  margin-top: 12px;
+  display: flex;
+  justify-content: flex-end;
+}
