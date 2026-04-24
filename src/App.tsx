@@ -3,10 +3,12 @@ import DashboardScreen from "./screens/DashboardScreen";
 import EncounterSetupScreen from "./screens/EncounterSetupScreen";
 import LiveEncounterScreen from "./screens/LiveEncounterScreen";
 import type { EncounterPreviewUnit } from "./types/encounter";
+import PlayersScreen from "./screens/PlayersScreen";
+import EnemiesScreen from "./screens/EnemiesScreen";
 
 function App() {
   const [currentScreen, setCurrentScreen] = useState<
-    "dashboard" | "encounter-setup" | "live-encounter"
+    "dashboard" | "encounter-setup" | "live-encounter" | "players" | "enemies"
   >("dashboard");
 
   const [activeEncounterUnits, setActiveEncounterUnits] = useState<
@@ -20,6 +22,14 @@ function App() {
         onBackToSetup={() => setCurrentScreen("encounter-setup")}
       />
     );
+  }
+
+  if (currentScreen === "players") {
+    return <PlayersScreen onBack={() => setCurrentScreen("dashboard")} />;
+  }
+
+  if (currentScreen === "enemies") {
+    return <EnemiesScreen onBack={() => setCurrentScreen("dashboard")} />;
   }
 
   if (currentScreen === "encounter-setup") {
@@ -37,6 +47,9 @@ function App() {
   return (
     <DashboardScreen
       onStartEncounter={() => setCurrentScreen("encounter-setup")}
+      onResumeEncounter={() => setCurrentScreen("live-encounter")}
+      onOpenPlayers={() => setCurrentScreen("players")}
+      onOpenEnemies={() => setCurrentScreen("enemies")}
     />
   );
 }

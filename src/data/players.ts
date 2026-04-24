@@ -1,4 +1,4 @@
-type MockPlayer = {
+type player = {
   id: string
   name: string
   maxHp: number
@@ -11,7 +11,7 @@ type MockPlayer = {
   cha: number;
 }
 
-export const mockPlayers: MockPlayer[] = [
+export const players: player[] = [
   {
     id: 'Fernando',
     name: 'Zif',

@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { mockPlayers } from "../data/mockPlayers";
-import { enemyBlocks, type EnemyBlockKey } from "../data/mockEnemies";
+import { players } from "../data/players";
+import { enemyBlocks, type EnemyBlockKey } from "../data/enemies";
 import type { EncounterPreviewUnit } from "../types/encounter";
 import { NumberRadial } from "../components/NumberRadial";
 import { InitiativePicker } from "../components/InitiativePicker";
+import { loadEncounter, clearEncounter } from "../utils/encounterStorage";
 
 type EncounterSetupScreenProps = {
   onBack: () => void;
@@ -32,9 +33,20 @@ function EncounterSetupScreen({
   const [modalType, setModalType] = useState<"hero" | "enemy" | null>(null);
   const [pendingHeroId, setPendingHeroId] = useState<string | null>(null);
 
-  const [selectedBlock, setSelectedBlock] = useState<EnemyBlockKey | null>(null);
+  const savedEncounter = loadEncounter();
+  const hasSavedEncounter = !!savedEncounter;
+
+  const [selectedBlock, setSelectedBlock] = useState<EnemyBlockKey | null>(
+    null
+  );
   const [pendingEnemySlot, setPendingEnemySlot] = useState<number | null>(null);
   const [showSlotPicker, setShowSlotPicker] = useState(false);
+
+  function handleResumeEncounter() {
+    if (!savedEncounter) return;
+
+    onBeginEncounter(savedEncounter.encounterUnits);
+  }
 
   function handleAddHero(heroId: string) {
     if (selectedHeroes.some((h) => h.id === heroId)) return;
@@ -79,10 +91,7 @@ function EncounterSetupScreen({
     }
 
     if (modalType === "hero" && pendingHeroId) {
-      setSelectedHeroes((prev) => [
-        ...prev,
-        { id: pendingHeroId, initiative },
-      ]);
+      setSelectedHeroes((prev) => [...prev, { id: pendingHeroId, initiative }]);
     }
 
     if (
@@ -113,9 +122,7 @@ function EncounterSetupScreen({
     if (!template) return `#${selectedEnemy.slot}`;
 
     const matches = selectedEnemies.filter(
-      (e) =>
-        e.block === selectedEnemy.block &&
-        e.slot === selectedEnemy.slot
+      (e) => e.block === selectedEnemy.block && e.slot === selectedEnemy.slot
     );
 
     if (matches.length === 1) return template.name;
@@ -128,8 +135,8 @@ function EncounterSetupScreen({
 
   const sortedSelectedHeroes = [...selectedHeroes].sort((a, b) => {
     if (b.initiative !== a.initiative) return b.initiative - a.initiative;
-    const aDex = mockPlayers.find((p) => p.id === a.id)?.dex ?? 0;
-    const bDex = mockPlayers.find((p) => p.id === b.id)?.dex ?? 0;
+    const aDex = players.find((p) => p.id === a.id)?.dex ?? 0;
+    const bDex = players.find((p) => p.id === b.id)?.dex ?? 0;
     return bDex - aDex;
   });
 
@@ -141,7 +148,7 @@ function EncounterSetupScreen({
   });
 
   const heroPreview: EncounterPreviewUnit[] = selectedHeroes.flatMap((h) => {
-    const p = mockPlayers.find((p) => p.id === h.id);
+    const p = players.find((p) => p.id === h.id);
     if (!p) return [];
     return [
       {
@@ -206,7 +213,7 @@ function EncounterSetupScreen({
 
           <div className="action-group">
             <div className="group-label">Heroes</div>
-            {mockPlayers.map((p) => (
+            {players.map((p) => (
               <button
                 key={p.id}
                 className="btn util"
@@ -243,7 +250,7 @@ function EncounterSetupScreen({
               <p className="log">No heroes selected.</p>
             ) : (
               sortedSelectedHeroes.map((h) => {
-                const p = mockPlayers.find((x) => x.id === h.id);
+                const p = players.find((x) => x.id === h.id);
                 if (!p) return null;
 
                 return (
@@ -313,16 +320,25 @@ function EncounterSetupScreen({
             <div className="action-group">
               <div className="group-label">Flow</div>
 
-              <button className="btn util" onClick={onBack}>
-                Back
-              </button>
+              {hasSavedEncounter && (
+                <button className="btn util" onClick={handleResumeEncounter}>
+                  Resume Encounter
+                </button>
+              )}
 
               <button
                 className="btn primary"
-                onClick={() => onBeginEncounter(encounterPreview)}
+                onClick={() => {
+                  clearEncounter();
+                  onBeginEncounter(encounterPreview);
+                }}
                 disabled={encounterPreview.length === 0}
               >
                 Begin
+              </button>
+
+              <button className="btn util" onClick={onBack}>
+                Back
               </button>
             </div>
           </div>

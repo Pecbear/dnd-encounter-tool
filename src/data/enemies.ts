@@ -1,6 +1,6 @@
 export type EnemyBlockKey = "PLAINS" | "CITY" | "CRYPT" | "INN";
 
-export type MockEnemy = {
+export type Enemy = {
   slot: number; // 1–6
   name: string;
   maxHp: number;
@@ -14,7 +14,7 @@ export type MockEnemy = {
   xp: number;
 };
 
-export const enemyBlocks: Record<EnemyBlockKey, Record<number, MockEnemy>> = {
+export const enemyBlocks: Record<EnemyBlockKey, Record<number, Enemy>> = {
   PLAINS: {
     1: {
       slot: 1,

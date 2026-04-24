@@ -1,8 +1,13 @@
 import { useEffect, useState } from "react";
 import type { EncounterPreviewUnit } from "../types/encounter";
 import "../App.css";
-import {DamageHealRibbonPicker} from "../components/DamageHealRibbonPicker";
-import { saveEncounter } from "../utils/encounterStorage";
+import { DamageHealRibbonPicker } from "../components/DamageHealRibbonPicker";
+import {
+  saveEncounter,
+  loadEncounter,
+  clearEncounter,
+  createEncounterRunId,
+} from "../utils/encounterStorage";
 import { StatusRadial } from "../components/StatusRadial";
 import { UnitStatBlock } from "../components/UnitStatBlock";
 
@@ -38,16 +43,40 @@ function getUnitStateLabel(unit: EncounterPreviewUnit) {
   return unit.side === "hero" ? "Downed" : "Defeated";
 }
 
+function createSessionId(units: any[]) {
+  return JSON.stringify(units.map((u) => u.id)).slice(0, 50);
+}
+
 function LiveEncounterScreen({
   units,
   onBackToSetup,
 }: LiveEncounterScreenProps) {
-  const [encounterUnits, setEncounterUnits] = useState(units);
-  const [currentTurnIndex, setCurrentTurnIndex] = useState(0);
-  const [round, setRound] = useState(1);
-  const [selectedTargetId, setSelectedTargetId] = useState("");
+  const rawSaved = loadEncounter();
+  const incomingSessionId = createSessionId(units);
+
+  const incomingRunId = useState(() => createEncounterRunId())[0];
+
+  const saved = rawSaved && rawSaved.encounterRunId ? rawSaved : null;
+
+  const [encounterUnits, setEncounterUnits] = useState(
+    saved?.encounterUnits ?? units
+  );
+
+  const [currentTurnIndex, setCurrentTurnIndex] = useState(
+    saved?.currentTurnIndex ?? 0
+  );
+
+  const [round, setRound] = useState(saved?.round ?? 1);
+
+  const [selectedTargetId, setSelectedTargetId] = useState(
+    saved?.selectedTargetId ?? ""
+  );
+
+  const [lastAction, setLastAction] = useState(
+    saved?.lastAction ?? "No actions yet."
+  );
+
   const [statusWheelOpen, setStatusWheelOpen] = useState(false);
-  const [lastAction, setLastAction] = useState("No actions yet.");
   const [expandedUnitId, setExpandedUnitId] = useState<string | null>(null);
   const [showOverrideSelect, setShowOverrideSelect] = useState(false);
   const [exitConfirmOpen, setExitConfirmOpen] = useState(false);
@@ -57,16 +86,26 @@ function LiveEncounterScreen({
   );
 
   useEffect(() => {
+    if (!encounterUnits?.length) return;
+
+    console.log("SAVING", {
+      sessionId: incomingSessionId,
+      encounterUnits,
+    });
+
     saveEncounter({
+      encounterRunId: saved?.encounterRunId ?? incomingRunId,
       encounterUnits,
       currentTurnIndex,
       round,
       selectedTargetId,
       lastAction,
+      updatedAt: Date.now(),
     });
   }, [encounterUnits, currentTurnIndex, round, selectedTargetId, lastAction]);
 
-  const currentUnit = encounterUnits[currentTurnIndex];
+  const currentUnit =
+    encounterUnits.length > 0 ? encounterUnits[currentTurnIndex] : undefined;
 
   useEffect(() => {
     setSelectedTargetId("");
@@ -160,15 +199,6 @@ function LiveEncounterScreen({
     setRibbonOpen(true);
   }
 
-  function handleMiss() {
-    if (!requireTarget()) return;
-    const target = encounterUnits.find((u) => u.id === selectedTargetId);
-
-    if (currentUnit && target) {
-      setLastAction(`${currentUnit.name} missed ${target.name}.`);
-    }
-  }
-
   function handleHeal() {
     if (!requireTarget()) return;
     setRibbonMode("heal");
@@ -194,7 +224,7 @@ function LiveEncounterScreen({
         return {
           ...u,
           statuses: exists
-            ? u.statuses.filter((s) => s !== status)
+            ? u.statuses.filter((s: string) => s !== status)
             : [...u.statuses, status],
         };
       });
@@ -216,6 +246,28 @@ function LiveEncounterScreen({
       setLastAction(`${currentUnit.name} skipped their turn.`);
     }
     handleNextTurn();
+  }
+
+  function handleExit(type: "save" | "discard") {
+    if (type === "discard") {
+      clearEncounter();
+      onBackToSetup();
+      return;
+    }
+
+    if (type === "save") {
+      saveEncounter({
+        encounterRunId: saved?.encounterRunId ?? incomingRunId,
+        encounterUnits,
+        currentTurnIndex,
+        round,
+        selectedTargetId,
+        lastAction,
+        updatedAt: Date.now(),
+      });
+
+      onBackToSetup();
+    }
   }
 
   function handleSetActiveUnit(unitId: string) {
@@ -267,7 +319,7 @@ function LiveEncounterScreen({
 
                   {unit.statuses.length > 0 && (
                     <div className="status-container">
-                      {unit.statuses.map((s) => (
+                      {unit.statuses.map((s: string) => (
                         <StatusPill key={s} status={s} />
                       ))}
                     </div>
@@ -292,7 +344,8 @@ function LiveEncounterScreen({
                 <strong>{currentUnit.name}</strong>
 
                 <span>
-                  HP {currentUnit.currentHp}/{currentUnit.maxHp} | AC {currentUnit.ac}
+                  HP {currentUnit.currentHp}/{currentUnit.maxHp} | AC{" "}
+                  {currentUnit.ac}
                 </span>
 
                 {getUnitStateLabel(currentUnit) && (
@@ -303,7 +356,7 @@ function LiveEncounterScreen({
 
                 {currentUnit.statuses.length > 0 && (
                   <div className="status-container">
-                    {currentUnit.statuses.map((s) => (
+                    {currentUnit.statuses.map((s: string) => (
                       <StatusPill key={s} status={s} />
                     ))}
                   </div>
@@ -319,7 +372,6 @@ function LiveEncounterScreen({
                     cha={currentUnit.cha}
                   />
                 )}
-
               </div>
 
               <div className="meta">Round {round}</div>
@@ -333,9 +385,7 @@ function LiveEncounterScreen({
                   <button className="btn attack" onClick={handleHit}>
                     Hit
                   </button>
-                  <button className="btn attack" onClick={handleMiss}>
-                    Miss
-                  </button>
+
                   <button className="btn heal" onClick={handleHeal}>
                     Heal
                   </button>
@@ -358,7 +408,7 @@ function LiveEncounterScreen({
                   <div className="group-label">DM Override</div>
 
                   <button className="btn util" onClick={handleSetHp}>
-                    Set HP (Active Unit)
+                    Set HP
                   </button>
 
                   <button
@@ -448,9 +498,10 @@ function LiveEncounterScreen({
               <strong>{selectedTarget.name}</strong>
 
               <span>
-                HP {selectedTarget.currentHp}/{selectedTarget.maxHp} | AC {selectedTarget.ac}
+                HP {selectedTarget.currentHp}/{selectedTarget.maxHp} | AC{" "}
+                {selectedTarget.ac}
               </span>
-            
+
               {getUnitStateLabel(selectedTarget) && (
                 <span className="unit-state">
                   {getUnitStateLabel(selectedTarget)}
@@ -459,7 +510,7 @@ function LiveEncounterScreen({
 
               {selectedTarget.statuses.length > 0 && (
                 <div className="status-container">
-                  {selectedTarget.statuses.map((s) => (
+                  {selectedTarget.statuses.map((s: string) => (
                     <StatusPill key={s} status={s} />
                   ))}
                 </div>
@@ -475,7 +526,6 @@ function LiveEncounterScreen({
                   cha={selectedTarget.cha}
                 />
               )}
-
             </div>
           )}
         </div>
@@ -506,8 +556,15 @@ function LiveEncounterScreen({
               This will return you to setup and discard live flow state.
             </p>
 
-            <button className="btn danger" onClick={() => onBackToSetup()}>
-              Yes, Exit
+            <button
+              className="btn danger"
+              onClick={() => handleExit("discard")}
+            >
+              Exit Without Saving
+            </button>
+
+            <button className="btn primary" onClick={() => handleExit("save")}>
+              Save & Exit
             </button>
 
             <button
