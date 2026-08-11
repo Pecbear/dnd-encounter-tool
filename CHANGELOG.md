@@ -1,6 +1,8 @@
 # D&D Encounter Tool — Changelog
 
-## [Unreleased] — August 10, 2026
+## [Unreleased]
+
+## [0.4.0] — August 10, 2026
 
 Major expansion of character management, enemy data, encounter preparation, filtering, and persistent application data. This release also establishes a more structured data architecture for future encounter-generation and management features.
 
