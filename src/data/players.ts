@@ -1,4 +1,4 @@
-type player = {
+export type Player = {
   id: string
   name: string
   maxHp: number
@@ -11,7 +11,7 @@ type player = {
   cha: number;
 }
 
-export const players: player[] = [
+export const players: Player[] = [
   {
     id: 'Fernando',
     name: 'Zif',

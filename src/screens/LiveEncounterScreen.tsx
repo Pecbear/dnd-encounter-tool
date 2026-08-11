@@ -1,4 +1,7 @@
 import { useEffect, useState } from "react";
+import type { Player } from "../data/players";
+import { getAllCharacters } from "../utils/characterStorage";
+import { enemies, type EnemyBlockKey } from "../data/enemies";
 import type { EncounterPreviewUnit } from "../types/encounter";
 import "../App.css";
 import { DamageHealRibbonPicker } from "../components/DamageHealRibbonPicker";
@@ -10,6 +13,7 @@ import {
 } from "../utils/encounterStorage";
 import { StatusRadial } from "../components/StatusRadial";
 import { UnitStatBlock } from "../components/UnitStatBlock";
+import { InitiativePicker } from "../components/InitiativePicker";
 
 type LiveEncounterScreenProps = {
   units: EncounterPreviewUnit[];
@@ -81,9 +85,36 @@ function LiveEncounterScreen({
   const [showOverrideSelect, setShowOverrideSelect] = useState(false);
   const [exitConfirmOpen, setExitConfirmOpen] = useState(false);
   const [ribbonOpen, setRibbonOpen] = useState(false);
+
   const [ribbonMode, setRibbonMode] = useState<"hit" | "heal" | "setHP" | null>(
     null
   );
+
+  const [addUnitOpen, setAddUnitOpen] = useState(false);
+  const [addUnitType, setAddUnitType] = useState<"hero" | "enemy" | null>(null);
+  const [availablePlayers, setAvailablePlayers] = useState<Player[]>([]);
+
+  const [selectedAddPlayerId, setSelectedAddPlayerId] = useState<string | null>(
+    null
+  );
+
+  const [selectedEnemyTheme, setSelectedEnemyTheme] =
+    useState<EnemyBlockKey | null>(null);
+
+  const [selectedEnemyTier, setSelectedEnemyTier] =
+    useState<number | null>(null);
+
+  const [pendingEnemyForInitiative, setPendingEnemyForInitiative] =
+    useState<string | null>(null);
+
+  useEffect(() => {
+  async function loadPlayers() {
+    const storedPlayers = await getAllCharacters();
+    setAvailablePlayers(storedPlayers);
+    }
+
+    loadPlayers();
+  }, []);
 
   useEffect(() => {
     if (!encounterUnits?.length) return;
@@ -208,6 +239,140 @@ function LiveEncounterScreen({
   function handleSetHp() {
     setRibbonMode("setHP");
     setRibbonOpen(true);
+  }
+
+  function handleSelectAddPlayer(playerId: string) {
+    setSelectedAddPlayerId(playerId);
+    setAddUnitOpen(false);
+    setAddUnitType(null);
+  }
+
+  function handleAddPlayerConfirmed(initiative: number) {
+    if (!selectedAddPlayerId) return;
+
+    const player = availablePlayers.find(
+      (p) => p.id === selectedAddPlayerId
+    );
+
+    if (!player) return;
+
+    const newUnit: EncounterPreviewUnit = {
+      id: player.id,
+      name: player.name,
+      initiative,
+      str: player.str,
+      dex: player.dex,
+      con: player.con,
+      int: player.int,
+      wis: player.wis,
+      cha: player.cha,
+      side: "hero",
+      maxHp: player.maxHp,
+      currentHp: player.maxHp,
+      ac: player.ac,
+      statuses: [],
+    };
+
+    setEncounterUnits((prev) => {
+      const activeUnitId = prev[currentTurnIndex]?.id;
+
+      const updated = [...prev, newUnit];
+
+      updated.sort((a, b) => {
+        if (b.initiative !== a.initiative) {
+          return b.initiative - a.initiative;
+        }
+
+        if (b.dex !== a.dex) {
+          return b.dex - a.dex;
+        }
+
+        if (a.side === "hero" && b.side === "enemy") return -1;
+        if (a.side === "enemy" && b.side === "hero") return 1;
+
+        return 0;
+      });
+
+      const newActiveIndex = updated.findIndex(
+        (u) => u.id === activeUnitId
+      );
+
+      if (newActiveIndex !== -1) {
+        setCurrentTurnIndex(newActiveIndex);
+      }
+
+      return updated;
+    });
+
+    setLastAction(`${player.name} joined the encounter.`);
+
+    setSelectedAddPlayerId(null);
+  }
+
+  function handleAddEnemyConfirmed(initiative: number, enemyName: string) {
+    if (!selectedEnemyTheme || selectedEnemyTier === null) return;
+
+    const enemy = enemies.find(
+      (e) =>
+        e.name === enemyName &&
+        e.tier === selectedEnemyTier &&
+        e.themes.includes(selectedEnemyTheme)
+    );
+
+    if (!enemy) return;
+
+    const newUnit: EncounterPreviewUnit = {
+      id: `enemy-${Date.now()}-${Math.floor(Math.random() * 100000)}`,
+      name: enemy.name,
+      initiative,
+      str: enemy.str,
+      dex: enemy.dex,
+      con: enemy.con,
+      int: enemy.int,
+      wis: enemy.wis,
+      cha: enemy.cha,
+      side: "enemy",
+      maxHp: enemy.maxHp,
+      currentHp: enemy.maxHp,
+      ac: enemy.ac,
+      statuses: [],
+    };
+
+    setEncounterUnits((prev) => {
+      const activeUnitId = prev[currentTurnIndex]?.id;
+
+      const updated = [...prev, newUnit];
+
+      updated.sort((a, b) => {
+        if (b.initiative !== a.initiative) {
+          return b.initiative - a.initiative;
+        }
+
+        if (b.dex !== a.dex) {
+          return b.dex - a.dex;
+        }
+
+        if (a.side === "hero" && b.side === "enemy") return -1;
+        if (a.side === "enemy" && b.side === "hero") return 1;
+
+        return 0;
+      });
+
+      const newActiveIndex = updated.findIndex(
+        (u) => u.id === activeUnitId
+      );
+
+      if (newActiveIndex !== -1) {
+        setCurrentTurnIndex(newActiveIndex);
+      }
+
+      return updated;
+    });
+
+    setLastAction(`${enemy.name} joined the encounter.`);
+
+    setSelectedEnemyTheme(null);
+    setSelectedEnemyTier(null);
   }
 
   function handleToggleStatus(status: string) {
@@ -413,6 +578,26 @@ function LiveEncounterScreen({
 
                   <button
                     className="btn util"
+                    onClick={() => {
+                      setAddUnitType("hero");
+                      setAddUnitOpen(true);
+                    }}
+                  >
+                    Add Player
+                  </button>
+
+                  <button
+                    className="btn util"
+                    onClick={() => {
+                      setAddUnitType("enemy");
+                      setAddUnitOpen(true);
+                    }}
+                  >
+                    Add Enemy
+                  </button>
+
+                  <button
+                    className="btn util"
                     onClick={() => setShowOverrideSelect(true)}
                   >
                     Active Unit
@@ -588,6 +773,158 @@ function LiveEncounterScreen({
           onClose={() => setStatusWheelOpen(false)}
         />
       )}
+
+      {selectedAddPlayerId && (
+        <InitiativePicker
+          onSelect={(value) => {
+            handleAddPlayerConfirmed(Number(value));
+          }}
+          onCancel={() => {
+            setSelectedAddPlayerId(null);
+          }}
+        />
+      )}
+
+      {pendingEnemyForInitiative && (
+        <InitiativePicker
+          onSelect={(value) => {
+            handleAddEnemyConfirmed(
+              Number(value),
+              pendingEnemyForInitiative
+            );
+
+            setPendingEnemyForInitiative(null);
+          }}
+          onCancel={() => {
+            setPendingEnemyForInitiative(null);
+          }}
+        />
+      )}
+
+      {addUnitOpen && addUnitType === "hero" && (
+        <div className="override-panel">
+          <div className="override-box">
+            <div className="group-label">Add Player</div>
+
+            {availablePlayers.map((player) => (
+              <button
+                key={player.id}
+                className="override-option"
+                onClick={() => {
+                  handleSelectAddPlayer(player.id);
+                }}
+              >
+                {player.name}
+              </button>
+            ))}
+
+            <button
+              className="btn util"
+              style={{ marginTop: 8 }}
+              onClick={() => {
+                setAddUnitOpen(false);
+                setAddUnitType(null);
+                setSelectedAddPlayerId(null);
+              }}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
+
+      {addUnitOpen && addUnitType === "enemy" && (
+        <div className="override-panel">
+          <div className="override-box">
+            <div className="group-label">Add Enemy</div>
+
+            {!selectedEnemyTheme && (
+              <>
+                <div className="group-label">Theme</div>
+
+                {[...new Set(enemies.flatMap((e) => e.themes))].map((theme) => (
+                  <button
+                    key={theme}
+                    className="override-option"
+                    onClick={() => setSelectedEnemyTheme(theme)}
+                  >
+                    {theme}
+                  </button>
+                ))}
+              </>
+            )}
+
+            {selectedEnemyTheme && selectedEnemyTier === null && (
+              <>
+                <div className="group-label">
+                  {selectedEnemyTheme} Tiers
+                </div>
+
+                {[
+                  ...new Set(
+                    enemies
+                      .filter((e) => e.themes.includes(selectedEnemyTheme))
+                      .map((e) => e.tier)
+                  ),
+                ]
+                  .sort((a, b) => a - b)
+                  .map((tier) => (
+                    <button
+                      key={tier}
+                      className="override-option"
+                      onClick={() => setSelectedEnemyTier(tier)}
+                    >
+                      Tier {tier}
+                    </button>
+                  ))}
+              </>
+            )}
+
+            {selectedEnemyTheme && selectedEnemyTier !== null && (
+              <>
+                <div className="group-label">
+                  Available Enemies
+                </div>
+
+                {enemies
+                  .filter(
+                    (e) =>
+                      e.tier === selectedEnemyTier &&
+                      e.themes.includes(selectedEnemyTheme)
+                  )
+                  .map((enemy) => (
+                    <button
+                      key={enemy.name}
+                      className="override-option"
+                      onClick={() => {
+                        setAddUnitOpen(false);
+                        setAddUnitType(null);
+
+                        setPendingEnemyForInitiative(enemy.name);
+                      }}
+                    >
+                      {enemy.name}
+                    </button>
+                  ))}
+              </>
+            )}
+
+            <button
+              className="btn util"
+              style={{ marginTop: 8 }}
+              onClick={() => {
+                setAddUnitOpen(false);
+                setAddUnitType(null);
+                setSelectedEnemyTheme(null);
+                setSelectedEnemyTier(null);
+              }}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
+
     </main>
   );
 }

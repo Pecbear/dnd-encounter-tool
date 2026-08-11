@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+*.hhc
+*.bat
+
+# Local D&D Encounter Tool backups
+dnd-encounter-backup-*.json

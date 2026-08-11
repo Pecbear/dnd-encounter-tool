@@ -1,10 +1,10 @@
-import { useState } from "react";
-import { players } from "../data/players";
-import { enemyBlocks, type EnemyBlockKey } from "../data/enemies";
+import { useEffect, useState } from "react";
+import { getAllCharacters } from "../utils/characterStorage";
+import { enemies, type EnemyBlockKey } from "../data/enemies";
 import type { EncounterPreviewUnit } from "../types/encounter";
-import { NumberRadial } from "../components/NumberRadial";
 import { InitiativePicker } from "../components/InitiativePicker";
 import { loadEncounter, clearEncounter } from "../utils/encounterStorage";
+import type { Player } from "../data/players";
 
 type EncounterSetupScreenProps = {
   onBack: () => void;
@@ -18,8 +18,8 @@ type SelectedHero = {
 
 type SelectedEnemy = {
   id: string;
-  block: EnemyBlockKey;
-  slot: number;
+  enemyName: string;
+  theme: EnemyBlockKey;
   initiative: number;
 };
 
@@ -29,6 +29,17 @@ function EncounterSetupScreen({
 }: EncounterSetupScreenProps) {
   const [selectedHeroes, setSelectedHeroes] = useState<SelectedHero[]>([]);
   const [selectedEnemies, setSelectedEnemies] = useState<SelectedEnemy[]>([]);
+  const [availablePlayers, setAvailablePlayers] = useState<Player[]>([]);
+
+  useEffect(() => {
+  async function loadPlayers() {
+    const storedPlayers = await getAllCharacters();
+    setAvailablePlayers(storedPlayers);
+    }
+
+    loadPlayers();
+  }, []);
+
   const [modalOpen, setModalOpen] = useState(false);
   const [modalType, setModalType] = useState<"hero" | "enemy" | null>(null);
   const [pendingHeroId, setPendingHeroId] = useState<string | null>(null);
@@ -36,11 +47,13 @@ function EncounterSetupScreen({
   const savedEncounter = loadEncounter();
   const hasSavedEncounter = !!savedEncounter;
 
-  const [selectedBlock, setSelectedBlock] = useState<EnemyBlockKey | null>(
-    null
-  );
-  const [pendingEnemySlot, setPendingEnemySlot] = useState<number | null>(null);
-  const [showSlotPicker, setShowSlotPicker] = useState(false);
+  const [selectedBlock, setSelectedBlock] =
+    useState<EnemyBlockKey | null>(null);
+
+  const [selectedTier, setSelectedTier] = useState<number | null>(null);
+
+  const [pendingEnemyName, setPendingEnemyName] =
+    useState<string | null>(null);
 
   function handleResumeEncounter() {
     if (!savedEncounter) return;
@@ -62,13 +75,17 @@ function EncounterSetupScreen({
 
   function handleSelectBlock(block: EnemyBlockKey) {
     setSelectedBlock(block);
-    setShowSlotPicker(true);
+    setSelectedTier(null);
   }
 
-  function handleSelectSlot(slot: number) {
-    setPendingEnemySlot(slot);
-    setShowSlotPicker(false);
+  function handleSelectTier(tier: number) {
+    setSelectedTier(tier);
+  }
 
+  function handleSelectEnemy(enemyName: string) {
+    if (!selectedBlock || selectedTier === null) return;
+
+    setPendingEnemyName(enemyName);
     setModalType("enemy");
     setModalOpen(true);
   }
@@ -91,20 +108,27 @@ function EncounterSetupScreen({
     }
 
     if (modalType === "hero" && pendingHeroId) {
-      setSelectedHeroes((prev) => [...prev, { id: pendingHeroId, initiative }]);
+      setSelectedHeroes((prev) => [
+        ...prev,
+        {
+          id: pendingHeroId,
+          initiative,
+        },
+      ]);
     }
 
     if (
       modalType === "enemy" &&
       selectedBlock &&
-      typeof pendingEnemySlot === "number"
+      selectedTier !== null &&
+      pendingEnemyName
     ) {
       setSelectedEnemies((prev) => [
         ...prev,
         {
           id: `enemy-${Date.now()}-${Math.floor(Math.random() * 100000)}`,
-          block: selectedBlock,
-          slot: pendingEnemySlot,
+          enemyName: pendingEnemyName,
+          theme: selectedBlock,
           initiative,
         },
       ]);
@@ -114,42 +138,68 @@ function EncounterSetupScreen({
     setModalOpen(false);
     setModalType(null);
     setPendingHeroId(null);
-    setPendingEnemySlot(null);
+    setPendingEnemyName(null);
   }
 
   function getEnemyDisplayName(selectedEnemy: SelectedEnemy) {
-    const template = enemyBlocks[selectedEnemy.block]?.[selectedEnemy.slot];
-    if (!template) return `#${selectedEnemy.slot}`;
-
     const matches = selectedEnemies.filter(
-      (e) => e.block === selectedEnemy.block && e.slot === selectedEnemy.slot
+      (e) =>
+        e.enemyName === selectedEnemy.enemyName &&
+        e.theme === selectedEnemy.theme
     );
 
-    if (matches.length === 1) return template.name;
+    const enemy = enemies.find(
+      (e) =>
+        e.name === selectedEnemy.enemyName &&
+        e.themes.includes(selectedEnemy.theme)
+    );
+
+    if (!enemy) return selectedEnemy.enemyName;
+
+    if (matches.length === 1) return enemy.name;
 
     const index = matches.findIndex((e) => e.id === selectedEnemy.id);
     const letter = String.fromCharCode(65 + index);
 
-    return `${template.name} ${letter}`;
+    return `${enemy.name} ${letter}`;
   }
 
   const sortedSelectedHeroes = [...selectedHeroes].sort((a, b) => {
-    if (b.initiative !== a.initiative) return b.initiative - a.initiative;
-    const aDex = players.find((p) => p.id === a.id)?.dex ?? 0;
-    const bDex = players.find((p) => p.id === b.id)?.dex ?? 0;
+    if (b.initiative !== a.initiative) {
+      return b.initiative - a.initiative;
+    }
+
+    const aDex = availablePlayers.find((p) => p.id === a.id)?.dex ?? 0;
+    const bDex = availablePlayers.find((p) => p.id === b.id)?.dex ?? 0;
+
     return bDex - aDex;
   });
 
   const sortedSelectedEnemies = [...selectedEnemies].sort((a, b) => {
-    if (b.initiative !== a.initiative) return b.initiative - a.initiative;
-    const aDex = enemyBlocks[a.block]?.[a.slot]?.dex ?? 0;
-    const bDex = enemyBlocks[b.block]?.[b.slot]?.dex ?? 0;
-    return bDex - aDex;
+    if (b.initiative !== a.initiative) {
+      return b.initiative - a.initiative;
+    }
+
+    const aEnemy = enemies.find(
+      (enemy) =>
+        enemy.name === a.enemyName &&
+        enemy.themes.includes(a.theme)
+    );
+
+    const bEnemy = enemies.find(
+      (enemy) =>
+        enemy.name === b.enemyName &&
+        enemy.themes.includes(b.theme)
+    );
+
+    return (bEnemy?.dex ?? 0) - (aEnemy?.dex ?? 0);
   });
 
   const heroPreview: EncounterPreviewUnit[] = selectedHeroes.flatMap((h) => {
-    const p = players.find((p) => p.id === h.id);
+    const p = availablePlayers.find((p) => p.id === h.id);
+
     if (!p) return [];
+
     return [
       {
         id: h.id,
@@ -171,7 +221,12 @@ function EncounterSetupScreen({
   });
 
   const enemyPreview: EncounterPreviewUnit[] = selectedEnemies.flatMap((e) => {
-    const enemy = enemyBlocks[e.block]?.[e.slot];
+    const enemy = enemies.find(
+      (enemy) =>
+        enemy.name === e.enemyName &&
+        enemy.themes.includes(e.theme)
+    );
+
     if (!enemy) return [];
 
     return [
@@ -195,16 +250,46 @@ function EncounterSetupScreen({
   });
 
   const encounterPreview = [...heroPreview, ...enemyPreview].sort((a, b) => {
-    if (b.initiative !== a.initiative) return b.initiative - a.initiative;
-    if (b.dex !== a.dex) return b.dex - a.dex;
+    if (b.initiative !== a.initiative) {
+      return b.initiative - a.initiative;
+    }
+
+    if (b.dex !== a.dex) {
+      return b.dex - a.dex;
+    }
+
     if (a.side === "hero" && b.side === "enemy") return -1;
     if (a.side === "enemy" && b.side === "hero") return 1;
+
     return 0;
   });
 
+  const availableEnemies =
+    selectedBlock && selectedTier !== null
+      ? enemies.filter(
+          (enemy) =>
+            enemy.tier === selectedTier &&
+            enemy.themes.includes(selectedBlock)
+        )
+      : [];
+
+  const availableTiers = selectedBlock
+    ? [
+        ...new Set(
+          enemies
+            .filter((enemy) => enemy.themes.includes(selectedBlock))
+            .map((enemy) => enemy.tier)
+        ),
+      ].sort((a, b) => a - b)
+    : [];
+
+  const availableThemes = [
+    ...new Set(enemies.flatMap((enemy) => enemy.themes)),
+  ];
+
   return (
-    <main className="encounter-root">
-      <h1 className="title">Encounter Setup</h1>
+    <main>
+      <h1>Encounter Setup</h1>
 
       <div className="encounter-grid">
         {/* LEFT */}
@@ -213,7 +298,8 @@ function EncounterSetupScreen({
 
           <div className="action-group">
             <div className="group-label">Heroes</div>
-            {players.map((p) => (
+
+            {availablePlayers.map((p) => (
               <button
                 key={p.id}
                 className="btn util"
@@ -225,18 +311,58 @@ function EncounterSetupScreen({
           </div>
 
           <div className="action-group">
-            <div className="group-label">Enemy Blocks</div>
+            <div className="group-label">Enemy Themes</div>
 
-            {(Object.keys(enemyBlocks) as EnemyBlockKey[]).map((block) => (
+            {availableThemes.map((theme) => (
               <button
-                key={block}
+                key={theme}
                 className="btn util"
-                onClick={() => handleSelectBlock(block)}
+                onClick={() => handleSelectBlock(theme)}
               >
-                {block}
+                {theme}
               </button>
             ))}
           </div>
+
+          {selectedBlock && (
+            <div className="action-group">
+              <div className="group-label">
+                {selectedBlock} Tiers
+              </div>
+
+              {availableTiers.map((tier) => (
+                <button
+                  key={tier}
+                  className="btn util"
+                  onClick={() => handleSelectTier(tier)}
+                >
+                  Tier {tier}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {selectedBlock && selectedTier !== null && (
+            <div className="action-group">
+              <div className="group-label">
+                Available Enemies
+              </div>
+
+              {availableEnemies.length === 0 ? (
+                <p className="log">No enemies available.</p>
+              ) : (
+                availableEnemies.map((enemy) => (
+                  <button
+                    key={enemy.name}
+                    className="btn util"
+                    onClick={() => handleSelectEnemy(enemy.name)}
+                  >
+                    {enemy.name}
+                  </button>
+                ))
+              )}
+            </div>
+          )}
         </div>
 
         {/* CENTER */}
@@ -250,15 +376,18 @@ function EncounterSetupScreen({
               <p className="log">No heroes selected.</p>
             ) : (
               sortedSelectedHeroes.map((h) => {
-                const p = players.find((x) => x.id === h.id);
+                const p = availablePlayers.find((x) => x.id === h.id);
+
                 if (!p) return null;
 
                 return (
                   <div key={p.id} className="unit-card">
                     <strong>{p.name}</strong>
+
                     <span>
                       Init {h.initiative} | HP {p.maxHp} | AC {p.ac}
                     </span>
+
                     <button
                       className="btn danger"
                       onClick={() => handleRemoveHero(p.id)}
@@ -278,15 +407,23 @@ function EncounterSetupScreen({
               <p className="log">No enemies selected.</p>
             ) : (
               sortedSelectedEnemies.map((e) => {
-                const enemy = enemyBlocks[e.block]?.[e.slot];
+                const enemy = enemies.find(
+                  (enemy) =>
+                    enemy.name === e.enemyName &&
+                    enemy.themes.includes(e.theme)
+                );
+
                 if (!enemy) return null;
 
                 return (
                   <div key={e.id} className="unit-card">
                     <strong>{getEnemyDisplayName(e)}</strong>
+
                     <span>
-                      Init {e.initiative} | HP {enemy.maxHp} | AC {enemy.ac}
+                      Init {e.initiative} | HP {enemy.maxHp} | AC{" "}
+                      {enemy.ac}
                     </span>
+
                     <button
                       className="btn danger"
                       onClick={() => handleRemoveEnemy(e.id)}
@@ -321,7 +458,10 @@ function EncounterSetupScreen({
               <div className="group-label">Flow</div>
 
               {hasSavedEncounter && (
-                <button className="btn util" onClick={handleResumeEncounter}>
+                <button
+                  className="btn util"
+                  onClick={handleResumeEncounter}
+                >
                   Resume Encounter
                 </button>
               )}
@@ -345,13 +485,6 @@ function EncounterSetupScreen({
         </div>
       </div>
 
-      {showSlotPicker && (
-        <NumberRadial
-          onSelect={(n) => handleSelectSlot(n)}
-          onClose={() => setShowSlotPicker(false)}
-        />
-      )}
-
       {modalOpen && (
         <InitiativePicker
           onSelect={(value) => {
@@ -361,7 +494,7 @@ function EncounterSetupScreen({
             setModalOpen(false);
             setModalType(null);
             setPendingHeroId(null);
-            setPendingEnemySlot(null);
+            setPendingEnemyName(null);
           }}
         />
       )}
