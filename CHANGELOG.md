@@ -1,5 +1,32 @@
 # D&D Encounter Tool — Changelog
 
+## [1.0.1] - 2026-08-25
+
+### Changes
+- Updated: Character JSON parser to distinguish between raw character data and derived D&D values.
+- Fixed: Maximum HP was incorrectly being populated from currentHealth.
+- Updated: Maximum HP is now calculated from class HP increases, Constitution modifier, total character level, and applicable HP bonuses.
+- Updated: Ability scores now account for applicable race and background adjustments instead of relying solely on the raw abilityScores[].score values.
+- Added: Reusable ability-score calculation logic for determining final/effective ability scores.
+- Added: Constitution modifier calculation based on the character's final Constitution score.
+- Updated: Maximum HP calculation now supports multiclass characters by combining levels and HP increases across all classes.
+- Updated: Armor Class calculation to account for equipped armor rather than relying solely on baseArmorClass.
+- Updated: Armor calculations now account for Dexterity restrictions imposed by equipped armor.
+- Added: Support for applicable character feature bonuses to AC.
+- Verified: Warforged Integrated Protection is correctly reflected in AC calculations.
+- Verified: Equipped Chain Mail and Integrated Protection correctly produce 17 AC for Errant.
+- Verified: Errant's derived character values now correctly resolve to:
+>STR 19
+>DEX 10
+>CON 16
+>INT 14
+>WIS 14
+>CHA 10
+>Max HP 31
+>AC 17
+- Clarified: Current HP, maximum HP, and temporary HP are treated as separate values.
+- Improved: Parser architecture is now positioned to handle additional derived D&D statistics without putting all calculation logic directly inside parseCharacterExport().
+
 ## [1.0.0] - 2026-08-25
 
 ### Changes
