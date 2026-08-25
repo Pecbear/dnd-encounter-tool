@@ -1,6 +1,13 @@
 # D&D Encounter Tool — Changelog
 
-## [Unreleased]
+## [1.0.0] - 2026-08-25
+
+### Changes
+
+- Fixed internal project `start_dev.bat`
+- Added automation for project LOCAHOST
+- Adjusted CHANGELOG
+- Changes to `.gitignore`
 
 ## [0.4.0] — August 10, 2026
 
