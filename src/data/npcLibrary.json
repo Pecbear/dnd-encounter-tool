@@ -1,0 +1,852 @@
+[
+    {
+        "id": "npc-001",
+        "name": "Edric Thornwell",
+        "race": "Human",
+        "role": "Commoner",
+        "attitude": "Friendly",
+        "appearance": "A lean, weathered farmer with sun-darkened skin, a crooked nose, and straw caught in his grey-brown hair.",
+        "personality": "Generous and talkative, often interrupting himself to remember another detail.",
+        "motivation": "Find someone willing to help repair his damaged irrigation channel before his crops die.",
+        "secret": "He has been secretly leaving food near the forest road for a wounded stranger who refuses to show their face.",
+        "stats": {
+            "ac": 10,
+            "hp": 4,
+            "statTemplate": "Commoner"
+        },
+        "createdAt": 0
+    },
+    {
+        "id": "npc-002",
+        "name": "Mira Ashcombe",
+        "race": "Halfling",
+        "role": "Commoner",
+        "attitude": "Neutral",
+        "appearance": "A round-faced woman with dark curls, flour-dusted sleeves, and a small burn scar on her left wrist.",
+        "personality": "Practical and blunt, with little patience for people who complain without helping.",
+        "motivation": "Deliver a basket of fresh bread to her brother before his shift at the guardhouse ends.",
+        "secret": "She has been watering down her family's cider to stretch their dwindling supplies, but insists the recipe has simply changed.",
+        "stats": {
+            "ac": 10,
+            "hp": 4,
+            "statTemplate": "Commoner"
+        },
+        "createdAt": 0
+    },
+    {
+        "id": "npc-003",
+        "name": "Bromli Copperkettle",
+        "race": "Dwarf",
+        "role": "Commoner",
+        "attitude": "Friendly",
+        "appearance": "A stocky dwarf with a braided copper beard, thick spectacles, and permanently stained fingernails.",
+        "personality": "Cheerful and absent-minded, frequently humming old mining songs.",
+        "motivation": "Find a replacement brass gear for his broken water clock.",
+        "secret": "He once worked as an engineer in a distant dwarven stronghold and knows a forgotten passage beneath the old quarter.",
+        "stats": {
+            "ac": 10,
+            "hp": 4,
+            "statTemplate": "Commoner"
+        },
+        "createdAt": 0
+    },
+    {
+        "id": "npc-004",
+        "name": "Selene Virewood",
+        "race": "Elf",
+        "role": "Commoner",
+        "attitude": "Suspicious",
+        "appearance": "A slender elf with pale green eyes, long silver-blond hair, and a collection of small wooden charms around her neck.",
+        "personality": "Quiet and observant, rarely answering a question without first asking one herself.",
+        "motivation": "Locate her missing younger cousin, who was last seen near the eastern road.",
+        "secret": "She saw a hooded figure carrying a bloodstained bundle out of town but fears the local authorities are involved.",
+        "stats": {
+            "ac": 10,
+            "hp": 4,
+            "statTemplate": "Commoner"
+        },
+        "createdAt": 0
+    },
+    {
+        "id": "npc-005",
+        "name": "Perrin Wobblewick",
+        "race": "Gnome",
+        "role": "Commoner",
+        "attitude": "Friendly",
+        "appearance": "A tiny elderly gnome with wild white hair, oversized boots, and a bright yellow scarf.",
+        "personality": "Excitable and endlessly curious, with a habit of naming ordinary objects.",
+        "motivation": "Recover his missing toolbox, which he believes was taken by a mischievous animal.",
+        "secret": "His toolbox contains an unfinished mechanical bird that can repeat phrases it has heard.",
+        "stats": {
+            "ac": 10,
+            "hp": 4,
+            "statTemplate": "Commoner"
+        },
+        "createdAt": 0
+    },
+    {
+        "id": "npc-006",
+        "name": "Korga Stonejaw",
+        "race": "Half-Orc",
+        "role": "Commoner",
+        "attitude": "Neutral",
+        "appearance": "A broad-shouldered half-orc woman with a shaved head, a chipped tusk, and a faded blue apron.",
+        "personality": "Reserved and patient, but fiercely protective of children.",
+        "motivation": "Save enough money to purchase a small plot of land outside the city.",
+        "secret": "She used to be a feared pit fighter but abandoned that life after accidentally seriously injuring a friend.",
+        "stats": {
+            "ac": 10,
+            "hp": 4,
+            "statTemplate": "Commoner"
+        },
+        "createdAt": 0
+    },
+    {
+        "id": "npc-007",
+        "name": "Neris Emberfall",
+        "race": "Tiefling",
+        "role": "Commoner",
+        "attitude": "Suspicious",
+        "appearance": "A young tiefling with curved charcoal horns, amber eyes, and a long coat patched at the elbows.",
+        "personality": "Nervous around strangers, but surprisingly sarcastic once comfortable.",
+        "motivation": "Find steady work that will allow her to leave the cramped room she rents.",
+        "secret": "She can identify counterfeit coins by sound and has quietly been helping merchants avoid a local scammer.",
+        "stats": {
+            "ac": 10,
+            "hp": 4,
+            "statTemplate": "Commoner"
+        },
+        "createdAt": 0
+    },
+    {
+        "id": "npc-008",
+        "name": "Darian Voss",
+        "race": "Dragonborn",
+        "role": "Commoner",
+        "attitude": "Friendly",
+        "appearance": "A bronze-scaled dragonborn with a missing horn tip, a thick wool vest, and a perpetually dusty tail.",
+        "personality": "Good-natured and enthusiastic, often laughing at his own jokes.",
+        "motivation": "Find a buyer for the unusual mushrooms he has gathered in the nearby hills.",
+        "secret": "Some of his mushrooms grow only where old magic has seeped into the earth.",
+        "stats": {
+            "ac": 10,
+            "hp": 4,
+            "statTemplate": "Commoner"
+        },
+        "createdAt": 0
+    },
+    {
+        "id": "npc-009",
+        "name": "Anwen Reed",
+        "race": "Human",
+        "role": "Commoner",
+        "attitude": "Neutral",
+        "appearance": "A middle-aged woman with a narrow face, dark braided hair, and a basket of freshly gathered herbs.",
+        "personality": "Patient and thoughtful, frequently pausing to study plants or insects.",
+        "motivation": "Gather enough medicinal herbs to prepare remedies for the coming winter.",
+        "secret": "She knows a secluded spring in the forest where the water sometimes reflects stars in daylight.",
+        "stats": {
+            "ac": 10,
+            "hp": 4,
+            "statTemplate": "Commoner"
+        },
+        "createdAt": 0
+    },
+    {
+        "id": "npc-010",
+        "name": "Tobin Bramble",
+        "race": "Halfling",
+        "role": "Commoner",
+        "attitude": "Friendly",
+        "appearance": "A freckled young halfling with messy brown hair, oversized boots, and a stable brush tucked into his belt.",
+        "personality": "Talkative and curious, constantly asking questions about travelers' adventures.",
+        "motivation": "Save enough money to become a caravan guard and see the wider world.",
+        "secret": "He has been practicing swordplay with a wooden broom handle behind the stables, though he has never held a real sword.",
+        "stats": {
+            "ac": 10,
+            "hp": 4,
+            "statTemplate": "Commoner"
+        },
+        "createdAt": 0
+    },
+    {
+        "id": "npc-011",
+        "name": "Garrick Holt",
+        "race": "Human",
+        "role": "Guard",
+        "attitude": "Suspicious",
+        "appearance": "A broad-shouldered veteran with a scarred cheek, greying beard, and well-maintained chainmail.",
+        "personality": "Disciplined and stern, preferring short questions and shorter answers.",
+        "motivation": "Identify suspicious newcomers and keep the caravan yard orderly.",
+        "secret": "He has been receiving anonymous letters warning him that someone inside the guardhouse is selling patrol schedules.",
+        "stats": {
+            "ac": 16,
+            "hp": 11,
+            "statTemplate": "Guard"
+        },
+        "createdAt": 0
+    },
+    {
+        "id": "npc-012",
+        "name": "Thalia Mooncrest",
+        "race": "Elf",
+        "role": "Guard",
+        "attitude": "Friendly",
+        "appearance": "A tall elf with dark braided hair, sharp blue eyes, and a polished breastplate decorated with silver leaves.",
+        "personality": "Calm and approachable, often using humor to defuse tense situations.",
+        "motivation": "Earn enough commendations to qualify for a position in the city watch's investigative unit.",
+        "secret": "She has been secretly teaching a group of street children how to recognize dangerous criminals.",
+        "stats": {
+            "ac": 16,
+            "hp": 11,
+            "statTemplate": "Guard"
+        },
+        "createdAt": 0
+    },
+    {
+        "id": "npc-013",
+        "name": "Durgan Ironvein",
+        "race": "Dwarf",
+        "role": "Guard",
+        "attitude": "Neutral",
+        "appearance": "A thickset dwarf with a braided black beard, a dented helmet, and a small silver hammer hanging from his belt.",
+        "personality": "Gruff but fair, with a habit of counting things under his breath.",
+        "motivation": "Recover a stolen shield that belonged to his late father.",
+        "secret": "He recognizes the markings on the shield as belonging to a private mercenary company rather than a local thief.",
+        "stats": {
+            "ac": 16,
+            "hp": 11,
+            "statTemplate": "Guard"
+        },
+        "createdAt": 0
+    },
+    {
+        "id": "npc-014",
+        "name": "Varka Ashfang",
+        "race": "Half-Orc",
+        "role": "Guard",
+        "attitude": "Hostile",
+        "appearance": "A muscular half-orc with a broken nose, a shaved scalp, and heavy armor scratched by repeated use.",
+        "personality": "Aggressive and domineering, interpreting hesitation as weakness.",
+        "motivation": "Force outsiders to obey the yard's rules and maintain his reputation as a feared enforcer.",
+        "secret": "He has been taking bribes from smugglers in exchange for allowing certain wagons through without inspection.",
+        "stats": {
+            "ac": 16,
+            "hp": 11,
+            "statTemplate": "Guard"
+        },
+        "createdAt": 0
+    },
+    {
+        "id": "npc-015",
+        "name": "Ilyra Fenwick",
+        "race": "Gnome",
+        "role": "Guard",
+        "attitude": "Neutral",
+        "appearance": "A compact gnome with copper goggles, a neat auburn bob, and a crossbow almost as large as she is.",
+        "personality": "Methodical and detail-oriented, frequently correcting people's descriptions of events.",
+        "motivation": "Prove that careful observation is more valuable than brute strength.",
+        "secret": "She has an exceptional memory for faces and remembers a visitor who supposedly died several years ago.",
+        "stats": {
+            "ac": 16,
+            "hp": 11,
+            "statTemplate": "Guard"
+        },
+        "createdAt": 0
+    },
+    {
+        "id": "npc-016",
+        "name": "Caelen Dawnscale",
+        "race": "Dragonborn",
+        "role": "Guard",
+        "attitude": "Friendly",
+        "appearance": "A tall silver dragonborn with pale scales, a long scar across his shoulder, and a bright red cloak.",
+        "personality": "Honorable and warm-hearted, with an almost ceremonial way of speaking.",
+        "motivation": "Protect travelers and earn a reputation worthy of his family's name.",
+        "secret": "He once deserted a battlefield to rescue wounded civilians and has never told his superiors.",
+        "stats": {
+            "ac": 16,
+            "hp": 11,
+            "statTemplate": "Guard"
+        },
+        "createdAt": 0
+    },
+    {
+        "id": "npc-017",
+        "name": "Merrit Quickstep",
+        "race": "Halfling",
+        "role": "Guard",
+        "attitude": "Suspicious",
+        "appearance": "A wiry halfling with cropped sandy hair, a narrow moustache, and a polished short sword.",
+        "personality": "Nervous and suspicious, constantly checking his surroundings.",
+        "motivation": "Find the person who has been leaving threatening notes at his home.",
+        "secret": "The notes are written by his estranged daughter, who is trying to force him to reconcile.",
+        "stats": {
+            "ac": 16,
+            "hp": 11,
+            "statTemplate": "Guard"
+        },
+        "createdAt": 0
+    },
+    {
+        "id": "npc-018",
+        "name": "Seris Blackthorn",
+        "race": "Tiefling",
+        "role": "Guard",
+        "attitude": "Neutral",
+        "appearance": "A dark-skinned tiefling with swept-back horns, golden eyes, and a heavy halberd resting against one shoulder.",
+        "personality": "Dry-witted and observant, rarely showing surprise.",
+        "motivation": "Discover who has been sabotaging the city watch's equipment.",
+        "secret": "She suspects the equipment failures are deliberate but has found evidence pointing toward a respected officer.",
+        "stats": {
+            "ac": 16,
+            "hp": 11,
+            "statTemplate": "Guard"
+        },
+        "createdAt": 0
+    },
+    {
+        "id": "npc-019",
+        "name": "Silas Wren",
+        "race": "Half-Elf",
+        "role": "Merchant",
+        "attitude": "Friendly",
+        "appearance": "A slender half-elf with neatly trimmed facial hair, colorful traveling clothes, and several rings on his fingers.",
+        "personality": "Charming and theatrical, treating every negotiation as a performance.",
+        "motivation": "Purchase unusual goods before the next caravan departs.",
+        "secret": "He buys and resells old maps, including one that appears to show a road through a forest that no longer exists.",
+        "stats": {
+            "ac": 10,
+            "hp": 4,
+            "statTemplate": "Commoner"
+        },
+        "createdAt": 0
+    },
+    {
+        "id": "npc-020",
+        "name": "Mara Vell",
+        "race": "Human",
+        "role": "Merchant",
+        "attitude": "Neutral",
+        "appearance": "A weathered woman in her forties with dark hair tied beneath a leather cap and a thick ledger tucked under one arm.",
+        "personality": "Efficient and no-nonsense, becoming visibly irritated when people waste time.",
+        "motivation": "Arrange safe passage for three caravans scheduled to leave within the week.",
+        "secret": "One of her regular drivers has been secretly transporting letters for a noble family without her permission.",
+        "stats": {
+            "ac": 10,
+            "hp": 4,
+            "statTemplate": "Commoner"
+        },
+        "createdAt": 0
+    },
+    {
+        "id": "npc-021",
+        "name": "Berrik Flintbarrel",
+        "race": "Dwarf",
+        "role": "Merchant",
+        "attitude": "Suspicious",
+        "appearance": "A stout dwarf with a red braided beard, heavy eyebrows, and a leather apron covered in old burn marks.",
+        "personality": "Cautious and stubborn, refusing to trust anyone who cannot identify good craftsmanship.",
+        "motivation": "Find a buyer for a shipment of finely worked metal tools.",
+        "secret": "The tools were stolen from a workshop that mysteriously burned down, and he is afraid the original owner will recognize them.",
+        "stats": {
+            "ac": 10,
+            "hp": 4,
+            "statTemplate": "Commoner"
+        },
+        "createdAt": 0
+    },
+    {
+        "id": "npc-022",
+        "name": "Lethira Silverdew",
+        "race": "Elf",
+        "role": "Merchant",
+        "attitude": "Friendly",
+        "appearance": "An elegant elf with long silver hair, pale lavender eyes, and a collection of glass bottles hanging from her belt.",
+        "personality": "Soft-spoken and attentive, remembering small details about customers.",
+        "motivation": "Sell a rare collection of perfumes and botanical extracts.",
+        "secret": "One of her perfumes causes people to briefly remember a place they have never visited.",
+        "stats": {
+            "ac": 10,
+            "hp": 4,
+            "statTemplate": "Commoner"
+        },
+        "createdAt": 0
+    },
+    {
+        "id": "npc-023",
+        "name": "Grimble Tallowpot",
+        "race": "Gnome",
+        "role": "Merchant",
+        "attitude": "Neutral",
+        "appearance": "A plump gnome with a bald head, enormous sideburns, and a coat filled with pockets of varying sizes.",
+        "personality": "Cheerfully eccentric, often offering unsolicited opinions about the quality of people's belongings.",
+        "motivation": "Sell a new batch of ingenious household gadgets.",
+        "secret": "Most of his inventions are unreliable, but one small brass device can detect hidden compartments in furniture.",
+        "stats": {
+            "ac": 10,
+            "hp": 4,
+            "statTemplate": "Commoner"
+        },
+        "createdAt": 0
+    },
+    {
+        "id": "npc-024",
+        "name": "Rhazak Emberclaw",
+        "race": "Dragonborn",
+        "role": "Merchant",
+        "attitude": "Suspicious",
+        "appearance": "A red-scaled dragonborn with black horns, a heavy traveling cloak, and a gold chain around his neck.",
+        "personality": "Proud and calculating, rarely offering a discount without expecting something in return.",
+        "motivation": "Recover a valuable cargo of spices that disappeared between two trading posts.",
+        "secret": "He suspects the cargo was taken by one of his business partners, but the missing goods also contained a sealed family heirloom.",
+        "stats": {
+            "ac": 10,
+            "hp": 4,
+            "statTemplate": "Commoner"
+        },
+        "createdAt": 0
+    },
+    {
+        "id": "npc-025",
+        "name": "Nessa Willowmere",
+        "race": "Halfling",
+        "role": "Merchant",
+        "attitude": "Friendly",
+        "appearance": "A bright-eyed halfling with curly auburn hair, a green waistcoat, and a cart overflowing with colorful fabrics.",
+        "personality": "Sociable and generous, frequently giving children small scraps of cloth to play with.",
+        "motivation": "Find a talented tailor willing to collaborate on a new line of travel clothing.",
+        "secret": "She has been quietly paying the debts of an elderly former business rival who once helped her family.",
+        "stats": {
+            "ac": 10,
+            "hp": 4,
+            "statTemplate": "Commoner"
+        },
+        "createdAt": 0
+    },
+    {
+        "id": "npc-026",
+        "name": "Orren Blackwell",
+        "race": "Human",
+        "role": "Merchant",
+        "attitude": "Hostile",
+        "appearance": "A heavyset merchant with a polished bald head, expensive fur-lined robes, and a thick gold signet ring.",
+        "personality": "Arrogant and dismissive, treating anyone with less money as an inconvenience.",
+        "motivation": "Drive competing merchants out of the marketplace and secure exclusive trading rights.",
+        "secret": "He has been paying local thieves to damage rival stalls and frighten away customers.",
+        "stats": {
+            "ac": 10,
+            "hp": 4,
+            "statTemplate": "Commoner"
+        },
+        "createdAt": 0
+    },
+    {
+        "id": "npc-027",
+        "name": "Hesta Ironkettle",
+        "race": "Dwarf",
+        "role": "Innkeeper",
+        "attitude": "Friendly",
+        "appearance": "A sturdy dwarf woman with a long grey braid, rosy cheeks, and a brass key ring attached to her belt.",
+        "personality": "Warm and motherly, but capable of silencing an entire room with one look.",
+        "motivation": "Keep her inn prosperous and protect the reputation of her late husband's business.",
+        "secret": "A loose floorboard beneath the common room hides a small collection of letters from travelers who never returned.",
+        "stats": {
+            "ac": 10,
+            "hp": 9,
+            "statTemplate": "Commoner"
+        },
+        "createdAt": 0
+    },
+    {
+        "id": "npc-028",
+        "name": "Alric Fen",
+        "race": "Human",
+        "role": "Innkeeper",
+        "attitude": "Neutral",
+        "appearance": "A thin, balding man with a narrow moustache, tired eyes, and a spotless white apron.",
+        "personality": "Reserved and meticulous, insisting that every guest follow the house rules.",
+        "motivation": "Save enough money to renovate the upper rooms before winter.",
+        "secret": "He once served as a messenger for a noble household and still knows several private entrances into the estate district.",
+        "stats": {
+            "ac": 10,
+            "hp": 9,
+            "statTemplate": "Commoner"
+        },
+        "createdAt": 0
+    },
+    {
+        "id": "npc-029",
+        "name": "Vessa Nightbloom",
+        "race": "Tiefling",
+        "role": "Innkeeper",
+        "attitude": "Suspicious",
+        "appearance": "A purple-skinned tiefling with short swept horns, dark braided hair, and a silver nose ring.",
+        "personality": "Sharp-tongued and perceptive, rarely forgetting a face or a debt.",
+        "motivation": "Discover who has been entering guest rooms after midnight.",
+        "secret": "She has been allowing a homeless family to sleep in an unused storeroom and fears the landlord will discover them.",
+        "stats": {
+            "ac": 10,
+            "hp": 9,
+            "statTemplate": "Commoner"
+        },
+        "createdAt": 0
+    },
+    {
+        "id": "npc-030",
+        "name": "Pellin Mossfoot",
+        "race": "Halfling",
+        "role": "Innkeeper",
+        "attitude": "Friendly",
+        "appearance": "A cheerful halfling with a round belly, thick brown moustache, and a green waistcoat with wooden buttons.",
+        "personality": "Loud, welcoming, and fond of telling exaggerated stories about famous travelers.",
+        "motivation": "Host a memorable celebration to attract more visitors to his inn.",
+        "secret": "He once unknowingly served a disguised royal heir and still has the guest's forgotten signet button.",
+        "stats": {
+            "ac": 10,
+            "hp": 9,
+            "statTemplate": "Commoner"
+        },
+        "createdAt": 0
+    },
+    {
+        "id": "npc-031",
+        "name": "Maelin Starbrook",
+        "race": "Elf",
+        "role": "Innkeeper",
+        "attitude": "Neutral",
+        "appearance": "An elderly elf with silver hair, deep-set green eyes, and a dark blue robe embroidered with tiny stars.",
+        "personality": "Patient and philosophical, often answering questions with a story from decades ago.",
+        "motivation": "Find someone trustworthy to take over the inn so she can retire.",
+        "secret": "She keeps a journal describing strange dreams shared by guests who stayed in the same upstairs room.",
+        "stats": {
+            "ac": 10,
+            "hp": 9,
+            "statTemplate": "Commoner"
+        },
+        "createdAt": 0
+    },
+    {
+        "id": "npc-032",
+        "name": "Lord Cedric Valemont",
+        "race": "Human",
+        "role": "Noble",
+        "attitude": "Neutral",
+        "appearance": "A slender nobleman in his early forties with carefully combed black hair, a trimmed beard, and a dark velvet doublet.",
+        "personality": "Diplomatic and cautious, rarely expressing an opinion before hearing both sides.",
+        "motivation": "Secure support for a proposed expansion of the city's trade roads.",
+        "secret": "He has been quietly funding repairs to a poor neighborhood without attaching his family name to the work.",
+        "stats": {
+            "ac": 15,
+            "hp": 9,
+            "statTemplate": "Noble"
+        },
+        "createdAt": 0
+    },
+    {
+        "id": "npc-033",
+        "name": "Lady Isolde Ravenshade",
+        "race": "Elf",
+        "role": "Noble",
+        "attitude": "Suspicious",
+        "appearance": "A tall elf with porcelain skin, long black hair, and an elaborate silver necklace shaped like a raven.",
+        "personality": "Reserved and calculating, studying people as though they were pieces in a game.",
+        "motivation": "Discover which members of the merchant council oppose her family's influence.",
+        "secret": "She has been secretly corresponding with an impoverished noble family to arrange a marriage alliance for her nephew.",
+        "stats": {
+            "ac": 15,
+            "hp": 9,
+            "statTemplate": "Noble"
+        },
+        "createdAt": 0
+    },
+    {
+        "id": "npc-034",
+        "name": "Baron Thrain Goldmantle",
+        "race": "Dwarf",
+        "role": "Noble",
+        "attitude": "Friendly",
+        "appearance": "A stout dwarf with a magnificent golden beard, jeweled rings, and a richly embroidered burgundy coat.",
+        "personality": "Jovial and generous, enjoying grand feasts and even grander stories.",
+        "motivation": "Find a skilled architect to restore his family's neglected manor.",
+        "secret": "His family fortune is nearly exhausted, and he has been selling heirlooms to maintain appearances.",
+        "stats": {
+            "ac": 15,
+            "hp": 9,
+            "statTemplate": "Noble"
+        },
+        "createdAt": 0
+    },
+    {
+        "id": "npc-035",
+        "name": "Dame Elira Thornvale",
+        "race": "Human",
+        "role": "Noble",
+        "attitude": "Hostile",
+        "appearance": "A stern woman with a sharp jaw, auburn hair pinned tightly behind her head, and a crimson cloak fastened with an iron brooch.",
+        "personality": "Proud and demanding, expecting immediate obedience from servants and strangers alike.",
+        "motivation": "Force a neighboring landowner to surrender a disputed stretch of farmland.",
+        "secret": "The documents supporting her claim are forged, but she believes no one will dare challenge her family.",
+        "stats": {
+            "ac": 15,
+            "hp": 9,
+            "statTemplate": "Noble"
+        },
+        "createdAt": 0
+    },
+    {
+        "id": "npc-036",
+        "name": "Prince Kaelen Ashscale",
+        "race": "Dragonborn",
+        "role": "Noble",
+        "attitude": "Friendly",
+        "appearance": "A handsome gold-scaled dragonborn with swept-back horns, bright green eyes, and a ceremonial cloak of deep blue.",
+        "personality": "Curious and idealistic, frequently wandering away from his attendants to speak with ordinary people.",
+        "motivation": "Learn how common citizens actually feel about the ruling family's decisions.",
+        "secret": "He has been disguising himself as a traveling scribe to visit neighborhoods his family rarely sees.",
+        "stats": {
+            "ac": 15,
+            "hp": 9,
+            "statTemplate": "Noble"
+        },
+        "createdAt": 0
+    },
+    {
+        "id": "npc-037",
+        "name": "Brother Malrec Vane",
+        "race": "Human",
+        "role": "Cultist",
+        "attitude": "Friendly",
+        "appearance": "A thin man with kind eyes, a shaved head, and plain brown robes bearing a small embroidered symbol beneath the collar.",
+        "personality": "Gentle and reassuring, speaking softly even when discussing disturbing subjects.",
+        "motivation": "Recruit people who feel lost or abandoned into his religious fellowship.",
+        "secret": "He genuinely believes the entity his group worships will bring peace, but he has never witnessed its power firsthand.",
+        "stats": {
+            "ac": 12,
+            "hp": 9,
+            "statTemplate": "Commoner"
+        },
+        "createdAt": 0
+    },
+    {
+        "id": "npc-038",
+        "name": "Sister Vaelis Duskthorn",
+        "race": "Tiefling",
+        "role": "Cultist",
+        "attitude": "Suspicious",
+        "appearance": "A pale tiefling woman with long black horns, violet eyes, and a dark veil covering the lower half of her face.",
+        "personality": "Controlled and secretive, choosing every word with deliberate care.",
+        "motivation": "Locate a missing ritual component before her superiors discover it is gone.",
+        "secret": "She stole the component herself after learning it was taken from a family grave.",
+        "stats": {
+            "ac": 12,
+            "hp": 9,
+            "statTemplate": "Commoner"
+        },
+        "createdAt": 0
+    },
+    {
+        "id": "npc-039",
+        "name": "Dorrik Ashmantle",
+        "race": "Dwarf",
+        "role": "Cultist",
+        "attitude": "Hostile",
+        "appearance": "A thick-bearded dwarf with soot-darkened skin, a shaved scalp, and a black iron pendant hanging from his neck.",
+        "personality": "Fanatical and confrontational, interpreting disagreement as a personal insult.",
+        "motivation": "Prevent outsiders from investigating an abandoned shrine used by his congregation.",
+        "secret": "He is terrified of the entity he worships and follows its followers only because he believes leaving would bring punishment.",
+        "stats": {
+            "ac": 12,
+            "hp": 9,
+            "statTemplate": "Commoner"
+        },
+        "createdAt": 0
+    },
+    {
+        "id": "npc-040",
+        "name": "Elyndra Mossveil",
+        "race": "Elf",
+        "role": "Cultist",
+        "attitude": "Neutral",
+        "appearance": "A slender elf with moss-green hair, dark circles beneath her eyes, and a necklace of polished bone beads.",
+        "personality": "Dreamy and distracted, occasionally speaking as though continuing a conversation no one else heard.",
+        "motivation": "Collect old folklore and forgotten prayers for her group's private ceremonies.",
+        "secret": "She has begun experiencing dreams that accurately predict small events the following day.",
+        "stats": {
+            "ac": 12,
+            "hp": 9,
+            "statTemplate": "Commoner"
+        },
+        "createdAt": 0
+    },
+    {
+        "id": "npc-041",
+        "name": "Kethra Emberhorn",
+        "race": "Half-Orc",
+        "role": "Cultist",
+        "attitude": "Suspicious",
+        "appearance": "A powerful half-orc woman with dark green skin, one broken tusk, and a dark red sash wrapped around her waist.",
+        "personality": "Quiet and intimidating, preferring action over religious speeches.",
+        "motivation": "Protect the group's meeting place from anyone who might expose it.",
+        "secret": "She joined the cult to investigate her brother's disappearance and is secretly searching for evidence that he is still alive.",
+        "stats": {
+            "ac": 12,
+            "hp": 9,
+            "statTemplate": "Commoner"
+        },
+        "createdAt": 0
+    },
+    {
+        "id": "npc-042",
+        "name": "Professor Aldous Merrow",
+        "race": "Human",
+        "role": "Scholar",
+        "attitude": "Friendly",
+        "appearance": "An elderly scholar with a long white beard, ink-stained fingers, and spectacles balanced precariously on his nose.",
+        "personality": "Enthusiastic and absent-minded, often forgetting the question he was originally asked.",
+        "motivation": "Translate a recently discovered collection of inscriptions from an ancient ruin.",
+        "secret": "One inscription appears to describe a city that matches Fendleton's layout, despite being centuries older than the settlement.",
+        "stats": {
+            "ac": 10,
+            "hp": 4,
+            "statTemplate": "Commoner"
+        },
+        "createdAt": 0
+    },
+    {
+        "id": "npc-043",
+        "name": "Nimri Cogsworth",
+        "race": "Gnome",
+        "role": "Scholar",
+        "attitude": "Neutral",
+        "appearance": "A short gnome with wild auburn hair, brass spectacles, and a satchel full of rolled diagrams.",
+        "personality": "Analytical and impatient, frequently correcting imprecise terminology.",
+        "motivation": "Study the unusual mechanical devices recovered from a nearby excavation.",
+        "secret": "One of the devices occasionally moves on its own when nobody is looking directly at it.",
+        "stats": {
+            "ac": 10,
+            "hp": 4,
+            "statTemplate": "Commoner"
+        },
+        "createdAt": 0
+    },
+    {
+        "id": "npc-044",
+        "name": "Thessara Moonwhisper",
+        "race": "Elf",
+        "role": "Scholar",
+        "attitude": "Suspicious",
+        "appearance": "An elderly elf with pale silver eyes, long white hair, and delicate gloves embroidered with constellations.",
+        "personality": "Highly intelligent but guarded, treating every conversation as an opportunity to test someone's knowledge.",
+        "motivation": "Find a missing volume from the archive before its contents become public.",
+        "secret": "The book contains records of a forgotten religious order whose symbols still appear on buildings throughout the region.",
+        "stats": {
+            "ac": 10,
+            "hp": 4,
+            "statTemplate": "Commoner"
+        },
+        "createdAt": 0
+    },
+    {
+        "id": "npc-045",
+        "name": "Baldric Stonequill",
+        "race": "Dwarf",
+        "role": "Scholar",
+        "attitude": "Friendly",
+        "appearance": "A round dwarf with a neatly trimmed grey beard, ink-stained sleeves, and a heavy leather book strapped to his back.",
+        "personality": "Patient and methodical, delighted whenever someone asks him about history.",
+        "motivation": "Document the old burial customs of the surrounding settlements.",
+        "secret": "He has found evidence that several graves in the local cemetery were deliberately left empty.",
+        "stats": {
+            "ac": 10,
+            "hp": 4,
+            "statTemplate": "Commoner"
+        },
+        "createdAt": 0
+    },
+    {
+        "id": "npc-046",
+        "name": "Ivara Solenne",
+        "race": "Human",
+        "role": "Scholar",
+        "attitude": "Neutral",
+        "appearance": "A middle-aged woman with dark skin, tightly curled hair, and a small collection of silver rings marking her academic rank.",
+        "personality": "Focused and skeptical, preferring evidence over speculation.",
+        "motivation": "Investigate unusual reports of lights appearing above the forest at night.",
+        "secret": "She witnessed one of the lights herself and recorded a sequence of symbols that she cannot explain.",
+        "stats": {
+            "ac": 10,
+            "hp": 4,
+            "statTemplate": "Commoner"
+        },
+        "createdAt": 0
+    },
+    {
+        "id": "npc-047",
+        "name": "Rovan Blackbriar",
+        "race": "Human",
+        "role": "Outlaw",
+        "attitude": "Suspicious",
+        "appearance": "A lean man with a dark beard, a scarred forehead, and a weather-stained cloak patched with pieces of different fabrics.",
+        "personality": "Cautious and calculating, rarely trusting anyone without a reason.",
+        "motivation": "Find a safe route out of the region before the local authorities identify him.",
+        "secret": "He was falsely accused of stealing from a wealthy merchant and has evidence proving another person committed the crime.",
+        "stats": {
+            "ac": 12,
+            "hp": 11,
+            "statTemplate": "Bandit"
+        },
+        "createdAt": 0
+    },
+    {
+        "id": "npc-048",
+        "name": "Sella Quickknife",
+        "race": "Halfling",
+        "role": "Outlaw",
+        "attitude": "Friendly",
+        "appearance": "A wiry halfling woman with cropped black hair, quick brown eyes, and a small knife hidden in her boot.",
+        "personality": "Playful and charming, using humor to distract people from her intentions.",
+        "motivation": "Earn enough money to buy passage for her younger brother out of the city.",
+        "secret": "She steals only from wealthy travelers and quietly distributes some of the proceeds to struggling families.",
+        "stats": {
+            "ac": 12,
+            "hp": 11,
+            "statTemplate": "Bandit"
+        },
+        "createdAt": 0
+    },
+    {
+        "id": "npc-049",
+        "name": "Veyra Nightshade",
+        "race": "Tiefling",
+        "role": "Outlaw",
+        "attitude": "Hostile",
+        "appearance": "A tall tiefling with curved black horns, a shaved sidecut, and a dark leather coat reinforced with metal plates.",
+        "personality": "Cold and ruthless, showing little patience for negotiation.",
+        "motivation": "Recover a stolen satchel containing coded messages before they reach the city watch.",
+        "secret": "The messages reveal that her former gang leader has been selling information to a noble household.",
+        "stats": {
+            "ac": 12,
+            "hp": 11,
+            "statTemplate": "Bandit"
+        },
+        "createdAt": 0
+    },
+    {
+        "id": "npc-050",
+        "name": "Kragor Redmaw",
+        "race": "Half-Orc",
+        "role": "Outlaw",
+        "attitude": "Neutral",
+        "appearance": "A muscular half-orc with a thick red beard, a missing ear, and a battered leather vest covered in old knife marks.",
+        "personality": "Gruff and surprisingly honorable, refusing to harm anyone who cannot defend themselves.",
+        "motivation": "Find the former members of his bandit crew who abandoned him after a failed robbery.",
+        "secret": "He knows the location of a hidden cache containing stolen goods, including several items that belong to innocent travelers.",
+        "stats": {
+            "ac": 12,
+            "hp": 11,
+            "statTemplate": "Bandit"
+        },
+        "createdAt": 0
+    }
+]

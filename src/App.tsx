@@ -5,10 +5,12 @@ import LiveEncounterScreen from "./screens/LiveEncounterScreen";
 import type { EncounterPreviewUnit } from "./types/encounter";
 import PlayersScreen from "./screens/PlayersScreen";
 import EnemiesScreen from "./screens/EnemiesScreen";
+import NpcPoolScreen from "./screens/NpcPoolScreen";
+import QuestBoardScreen from "./screens/QuestBoardScreen";
 
 function App() {
   const [currentScreen, setCurrentScreen] = useState<
-    "dashboard" | "encounter-setup" | "live-encounter" | "players" | "enemies"
+    "dashboard" | "encounter-setup" | "live-encounter" | "players" | "enemies" | "npc-pool" | "quest-board"
   >("dashboard");
 
   const [activeEncounterUnits, setActiveEncounterUnits] = useState<
@@ -32,6 +34,14 @@ function App() {
     return <EnemiesScreen onBack={() => setCurrentScreen("dashboard")} />;
   }
 
+  if (currentScreen === "npc-pool") {
+    return <NpcPoolScreen onBack={() => setCurrentScreen("dashboard")} />;
+  }
+
+  if (currentScreen === "quest-board") {
+  return <QuestBoardScreen onBack={() => setCurrentScreen("dashboard")} />;
+  }
+
   if (currentScreen === "encounter-setup") {
     return (
       <EncounterSetupScreen
@@ -50,6 +60,8 @@ function App() {
       onResumeEncounter={() => setCurrentScreen("live-encounter")}
       onOpenPlayers={() => setCurrentScreen("players")}
       onOpenEnemies={() => setCurrentScreen("enemies")}
+      onOpenNpcPool={() => setCurrentScreen("npc-pool")}
+      onOpenQuestBoard={() => setCurrentScreen("quest-board")}
     />
   );
 }

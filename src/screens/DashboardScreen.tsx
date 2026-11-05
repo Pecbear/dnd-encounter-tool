@@ -10,6 +10,8 @@ type DashboardScreenProps = {
   onResumeEncounter: () => void;
   onOpenPlayers: () => void;
   onOpenEnemies: () => void;
+  onOpenNpcPool: () => void;
+  onOpenQuestBoard: () => void;
 };
 
 function DashboardScreen({
@@ -17,6 +19,8 @@ function DashboardScreen({
   onResumeEncounter,
   onOpenEnemies,
   onOpenPlayers,
+  onOpenNpcPool,
+  onOpenQuestBoard,
 }: DashboardScreenProps) {
   const savedEncounter = loadEncounter();
 
@@ -94,6 +98,16 @@ function DashboardScreen({
             className="btn util"
             onClick={onOpenEnemies}>
               Enemies
+            </button>
+
+            <button
+            className="btn util"
+            onClick={onOpenNpcPool}>
+              NPC Pool
+            </button>
+
+            <button className="btn util" onClick={onOpenQuestBoard}>
+              Quest Board
             </button>
 
             <button className="btn util">History</button>

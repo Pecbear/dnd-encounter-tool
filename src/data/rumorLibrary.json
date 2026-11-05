@@ -1,0 +1,137 @@
+[
+    {
+        "id": "rumor-001",
+        "title": "The Silent Bell",
+        "content": "They say there's an old bell somewhere beneath the town. Sometimes people hear it ring, even when nobody has touched it. Those who hear it swear the streets look different afterward.",
+        "source": "An elderly stable hand",
+        "location": "Caravan Yard",
+        "truthfulness": "True",
+        "category": "Supernatural"
+    },
+    {
+        "id": "rumor-002",
+        "title": "The Merchant's Missing Fortune",
+        "content": "A wealthy merchant buried a chest of gold outside the eastern road before disappearing. His servants have been searching for it ever since, but nobody knows where he buried it.",
+        "source": "A drunken caravan driver",
+        "location": "Local Tavern",
+        "truthfulness": "Partially True",
+        "category": "Treasure"
+    },
+    {
+        "id": "rumor-003",
+        "title": "The Bride in the Woods",
+        "content": "A traveler claims he saw a woman dressed in an old wedding gown standing between the trees. When he approached, she vanished. He says he heard a bell just before she disappeared.",
+        "source": "A frightened woodcutter",
+        "location": "Marketplace",
+        "truthfulness": "Unknown",
+        "category": "Supernatural"
+    },
+    {
+        "id": "rumor-004",
+        "title": "The Rat King",
+        "content": "There's a giant rat living beneath the bakery. It wears a little crown and commands the others. The baker swears it's true, though he's been drinking rather heavily lately.",
+        "source": "A group of local children",
+        "location": "Marketplace",
+        "truthfulness": "False",
+        "category": "Humorous"
+    },
+    {
+        "id": "rumor-005",
+        "title": "The Empty Graves",
+        "content": "Some of the graves in the old cemetery are empty. Not robbed, not disturbed. Empty. The gravedigger refuses to work after sunset now.",
+        "source": "A cemetery groundskeeper",
+        "location": "Cemetery",
+        "truthfulness": "True",
+        "category": "Mystery"
+    },
+    {
+        "id": "rumor-006",
+        "title": "The Watchman's Bribe",
+        "content": "Certain wagons pass through the caravan yard without inspection. Everyone knows someone in the watch is being paid, but nobody agrees on who.",
+        "source": "A traveling merchant",
+        "location": "Caravan Yard",
+        "truthfulness": "Partially True",
+        "category": "Crime"
+    },
+    {
+        "id": "rumor-007",
+        "title": "The Forgotten Heir",
+        "content": "The old noble family has a hidden heir living among commoners. They say the child bears a birthmark shaped like the family's crest, and someone has been quietly searching for them.",
+        "source": "A servant from a noble household",
+        "location": "Noble District",
+        "truthfulness": "Unknown",
+        "category": "Politics"
+    },
+    {
+        "id": "rumor-008",
+        "title": "The Cursed Blacksmith",
+        "content": "A blacksmith once forged a blade for a wealthy family and was cursed for it. Now every weapon he touches breaks, and his reflection sometimes moves when he doesn't.",
+        "source": "An apprentice smith",
+        "location": "Artisan Quarter",
+        "truthfulness": "Partially True",
+        "category": "Supernatural"
+    },
+    {
+        "id": "rumor-009",
+        "title": "The Secret Tunnel",
+        "content": "There's a tunnel beneath the town hall leading straight to the treasury. A drunk mason claims he helped build it and still remembers the entrance. Nobody believes him.",
+        "source": "A retired mason",
+        "location": "Town Square",
+        "truthfulness": "False",
+        "category": "Adventure"
+    },
+    {
+        "id": "rumor-010",
+        "title": "The Forest That Moves",
+        "content": "Travelers returning from the forest say the paths don't always lead where they should. One man claims he walked east for an entire day and somehow returned to the same clearing.",
+        "source": "A caravan scout",
+        "location": "Caravan Yard",
+        "truthfulness": "True",
+        "category": "Mystery"
+    },
+    {
+        "id": "rumor-011",
+        "title": "The Stolen Moonstone",
+        "content": "A local jeweler's most valuable moonstone was stolen last week. The strange part is that the thief left behind a perfectly identical stone, except it casts no shadow.",
+        "source": "The jeweler's assistant",
+        "location": "Marketplace",
+        "truthfulness": "Unknown",
+        "category": "Crime"
+    },
+    {
+        "id": "rumor-012",
+        "title": "The Three Faiths",
+        "content": "The three religious institutions have been arguing over who has the right to ring the ceremonial bell during the next public gathering. Some say the disagreement is about more than tradition.",
+        "source": "A temple groundskeeper",
+        "location": "Religious Quarter",
+        "truthfulness": "Partially True",
+        "category": "Politics"
+    },
+    {
+        "id": "rumor-013",
+        "title": "The Invisible Pickpocket",
+        "content": "A thief has been stealing purses without ever touching anyone. People swear their coins simply vanish while they're walking through the market. It's probably a wizard. Or a very talented monkey.",
+        "source": "A market stall owner",
+        "location": "Marketplace",
+        "truthfulness": "False",
+        "category": "Humorous"
+    },
+    {
+        "id": "rumor-014",
+        "title": "The Prisoner's Warning",
+        "content": "A prisoner recently escaped the guardhouse, leaving a message scratched into the wall: 'Don't trust the faces beneath the masks.' The guards painted over it before anyone could investigate.",
+        "source": "A junior guard",
+        "location": "Guardhouse",
+        "truthfulness": "Unknown",
+        "category": "Mystery"
+    },
+    {
+        "id": "rumor-015",
+        "title": "The Merchant's Good Deed",
+        "content": "A wealthy merchant has been secretly paying the debts of struggling families. Some call it charity. Others insist he's buying their loyalty before a major political decision.",
+        "source": "A local shopkeeper",
+        "location": "Marketplace",
+        "truthfulness": "True",
+        "category": "Local Gossip"
+    }
+]

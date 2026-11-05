@@ -1,5 +1,11 @@
 # D&D Encounter Tool — Changelog
 
+## [1.1.0] - 2026-11-05
+
+### Changes
+- Added NPC Pool Page to generate random NPCs
+- Added Rumors and Qeusts to generate Rumors and Quests
+
 ## [1.0.1] - 2026-08-25
 
 ### Changes

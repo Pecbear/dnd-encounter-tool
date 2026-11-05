@@ -25,6 +25,7 @@ assets/
 *.sw?
 *.hhc
 *.bat
+*.env
 
 # Local D&D Encounter Tool backups
 dnd-encounter-backup-*.json
